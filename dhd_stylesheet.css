@@ -22,6 +22,17 @@
 	}
 }
 
+@media (max-width: 768px) {
+	.divElement{
+		left:10%;
+		top:10%;
+		position:absolute;
+		height:350px;
+		text-align:left;
+		width:900px;
+	}
+}
+
 .artifact input[type="text"]{ 
     background-color: transparent;  
     border-style: solid;  
