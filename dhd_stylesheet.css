@@ -43,15 +43,15 @@ p.linkFont {
     margin-left: 1100px;
 }
 a:link {
-    color: #666;
+    color: white;
 	text-decoration: none;
 }
 a:visited {
-    color:#666;
+    color:white;
 }
 a:hover {
-    color: white;
+    color: #666;
 }
 a:active {
-    color: white;
+    color: #666;
 }
