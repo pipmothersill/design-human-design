@@ -1,0 +1,57 @@
+.headerFont {
+	font-family: "Helvetica"; 
+	font-size: 24px;
+	color: #666;
+	margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+p.mainFont {
+	font-family: "Sentinel Book";
+	font-size: 48px;
+	color: #FFF;
+	text-align: left;
+	width: 12em;
+	margin-top: 150px;
+    margin-bottom: 150px;
+    margin-right: auto;
+    margin-left: auto;
+	line-height: 60px;
+}
+span.artifact { 
+	color: #09F;
+}
+span.inspiration { 
+	color: #6C9;
+}
+span.intent { 
+	color: #C6C;
+}
+span.techniques { 
+	color: #F90;
+}
+span.medium { 
+	color: #FF0;
+}
+p.linkFont {
+	font-family: "Helvetica"; 
+	font-size: 24px;
+	margin-top: 50px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 1100px;
+}
+a:link {
+    color: #666;
+	text-decoration: none;
+}
+a:visited {
+    color:#666;
+}
+a:hover {
+    color: white;
+}
+a:active {
+    color: white;
+}
