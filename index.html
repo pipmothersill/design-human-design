@@ -78,47 +78,90 @@
 
 	function RndArtifact() {
 		var RndArtifact = Math.floor(Math.random()*artifacts.length);
-  		document.getElementById('ShowArtifact').innerHTML=artifacts[RndArtifact];
+  		document.getElementById('ShowArtifact').value=artifacts[RndArtifact];
   	}
 
 	function RndInspiration() {
 		var RndInspiration = Math.floor(Math.random()*inspirations.length);
-  		document.getElementById('ShowInspiration').innerHTML=inspirations[RndInspiration];
+  		document.getElementById('ShowInspiration').value=inspirations[RndInspiration];
   	}
 
 	function RndTension() {
 		var RndTension= Math.floor(Math.random()*tensions.length);
-  		document.getElementById('ShowTension').innerHTML=tensions[RndTension];
+  		document.getElementById('ShowTension').value=tensions[RndTension];
   	}
 		
 	function RndTechnique() {
 		var RndTechnique= Math.floor(Math.random()*techniques.length);
-  		document.getElementById('ShowTechnique').innerHTML=techniques[RndTechnique];
+  		document.getElementById('ShowTechnique').value=techniques[RndTechnique];
   	}
 
   	function RndMedium() {
 		var RndMedium= Math.floor(Math.random()*medium.length);
-  		document.getElementById('ShowMedium').innerHTML=medium[RndMedium];
+  		document.getElementById('ShowMedium').value=medium[RndMedium];
   	}
 		
 	onload = function() { RndArtifact(); RndInspiration(); RndTension(); RndTechnique(); RndMedium();}
-	
+
+
+// function loadData() {
+// 	var url="https://docs.google.com/spreadsheets/d/14h5eEvELe5eMX_6XF6G-tHDT8G1-FNJI3kADJE3ss3Q/pub?output=csv";
+// 	xmlhttp=new XMLHttpRequest();
+// 	xmlhttp.onreadystatechange = function() {
+// 	    if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+// 	    	document.getElementById("data").innerHTML = xmlhttp.responseText;
+// 	    }
+// 	};
+// 	xmlhttp.open("GET",url,true);
+// 	xmlhttp.send(null);
+// }
+
+// $.getJSON("http://cors.io/spreadsheets.google.com/feeds/list/14h5eEvELe5eMX_6XF6G-tHDT8G1-FNJI3kADJE3ss3Q/od6/public/values?alt=json", function(data) {
+//   //first row "title" column
+//   console.log(data.feed.entry[0]['gsx$title']['$t']);
+// });
+ 
+ // ID of the Google Spreadsheet
+	var spreadsheetID = "14h5eEvELe5eMX_6XF6G-tHDT8G1-FNJI3kADJE3ss3Q";
+ 
+ // Make sure it is public or set to Anyone with link can view 
+	var url = "https://spreadsheets.google.com/feeds/list/" + spreadsheetID + "/od6/public/values?alt=json";
+ 
+	$.getJSON(url, function(data) {
+
+
+ 		
+ 		// var entry = data.feed.entry;
+ 		
+ 		// $(entry).each(function(){
+		 //    // Column names are name, age, etc.
+		 //    $('.results').prepend('<h2>'+this.gsx$name.$t+'</h2><p>'+this.gsx$age.$t+'</p>');
+  	// 	});
+ 
+ 	});
+
 </script>
 
 </head>
 
 
 <body bgcolor=#1A1A1A>
-<p class="headerFont">_design_human_design</p>
+<p class="linkFont"><b><a href="index.html">_design_human_design</a></b></p>
 
 
-<p class="mainFont">
-<a href="javascript:RndArtifact()">Design </a><span class="artifact" id="ShowArtifact"></span><br />
-<a href="javascript:RndInspiration()">Inspired by </a><span class="inspiration" id="ShowInspiration"></span><br />
-<a href="javascript:RndTension()">That is </a><span class="intent" id="ShowTension"></span><br />
-<a href="javascript:RndTechnique()">Through </a><span class="techniques" id="ShowTechnique"></span><br />
-<a href="javascript:RndMedium()">Using </a><span class="medium" id="ShowMedium"></span>
-</p>
-<p class="linkFont"><b><a href="index.html">_design_more</a></b></p>
+<div class="divElement">
+<a href="javascript:RndArtifact()" class="mainFont">Design </a><span class="artifact"><input type="text" id="ShowArtifact" onClick="this.select();"></span><br />
+<a href="javascript:RndInspiration()" class="mainFont">Inspired by </a><span class="inspiration"><input type="text" id="ShowInspiration" onClick="this.select();"></span></span><br />
+<a href="javascript:RndTension()" class="mainFont">That is </a><span class="tension"><input type="text" id="ShowTension" onClick="this.select();"></span><br />
+<a href="javascript:RndTechnique()" class="mainFont">Through </a><span class="technique"><input type="text" id="ShowTechnique" onClick="this.select();"></span><br />
+<a href="javascript:RndMedium()" class="mainFont">Using </a><span class="medium"><input type="text" id="ShowMedium" onClick="this.select();"></span>
+</div>
+
+<!-- <button type="button" onclick="loadData()">Load Spreadsheet Data</button>
+<div id="data"></div> -->
+
+<div>
+
+</div>
 </body>
 </html>
