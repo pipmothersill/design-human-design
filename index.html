@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>designhumandesign</title>
+<style type="text/css">
+.headerFont {
+	font-family: "Helvetica"; 
+	font-size: 24px;
+	color: #666;
+	margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+p.mainFont {
+	font-family: "Sentinel Book";
+	font-size: 48px;
+	color: #FFF;
+	text-align: left;
+	width: 12em;
+	margin-top: 150px;
+    margin-bottom: 150px;
+    margin-right: auto;
+    margin-left: auto;
+	line-height: 60px;
+}
+span.artifact { 
+	color: #09F;
+}
+span.inspiration { 
+	color: #6C9;
+}
+span.intent { 
+	color: #C6C;
+}
+span.techniques { 
+	color: #F90;
+}
+span.medium { 
+	color: #FF0;
+}
+p.linkFont {
+	font-family: "Helvetica"; 
+	font-size: 24px;
+	margin-top: 50px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 1100px;
+}
+a:link {
+    color: #666;
+	text-decoration: none;
+}
+a:visited {
+    color:#666;
+}
+a:hover {
+    color: white;
+}
+a:active {
+    color: white;
+}
+</style>
+
+<script type="text/javascript">
+	var artifacts = [
+	"an object",
+ 	"an interaction",
+ 	"a website",
+	"a service",
+ 	"an image",
+ 	"an app",
+	"an experience",
+ 	"an installation",
+	"a technology",
+ 	"a brand",
+	"a concept",
+ 	"a book"];
+	
+	var inspirations = [
+	"circles",
+ 	"African fashion",
+	"squares",
+ 	"dots",
+ 	"furniture",
+ 	"cameras",
+	"natural materials",
+ 	"senior citizens",
+ 	"Eastern medicine",
+	"guns",
+ 	"healthcare",
+ 	"curves"];
+	
+	var tensions = [
+ 	"trusting",
+ 	"chaotic",
+ 	"approachable",
+	"discrete",
+ 	"tactical",
+ 	"collaborative",
+	"immersive",
+ 	"a family",
+ 	"paradigm shifting",
+	"overlapping",
+ 	"contrasting",
+	"responsive"];
+	
+	var techniques = [
+ 	"forms",
+ 	"brand touchpoints",
+ 	"patterns",
+	"wireframes",
+ 	"textures",
+ 	"materials",
+	"VR simulations",
+ 	"hardware hacks",
+ 	"concept sketches",
+	"personas",
+ 	"buttons",
+ 	"layouts"];
+	
+	var medium = [
+ 	"fabric",
+	"pen & paper",
+	"paint",
+	"collage",
+	"video",
+	"code",
+ 	"card & tape",
+	"pipe cleaners",
+ 	"existing objects",
+	"CAD",
+ 	"Photoshop",
+ 	"Excel"];
+	function RndVariable() {
+		var RndArtifact = Math.floor(Math.random()*artifacts.length);
+  		document.getElementById('ShowArtifact').innerHTML=artifacts[RndArtifact];
+	
+		var RndInspiration = Math.floor(Math.random()*inspirations.length);
+  		document.getElementById('ShowInspiration').innerHTML=inspirations[RndInspiration];
+		
+		var RndTension= Math.floor(Math.random()*tensions.length);
+  		document.getElementById('ShowTension').innerHTML=tensions[RndTension];
+		
+		var RndTechnique= Math.floor(Math.random()*techniques.length);
+  		document.getElementById('ShowTechnique').innerHTML=techniques[RndTechnique];
+		
+		var RndMedium= Math.floor(Math.random()*medium.length);
+  		document.getElementById('ShowMedium').innerHTML=medium[RndMedium];}
+		
+	onload = function() { RndVariable(); }
+</script>
+
+</head>
+
+
+<body bgcolor=#1A1A1A>
+<p class="headerFont">_design_human_design</p>
+
+
+<p class="mainFont">
+Design <span class="artifact" id="ShowArtifact"></span>
+<br />Inspired by <span class="inspiration" id="ShowInspiration"></span>
+<br />That is <span class="intent" id="ShowTension"></span>
+<br />Through <span class="techniques" id="ShowTechnique"></span>
+<br />Using <span class="medium" id="ShowMedium"></span>
+</p>
+<p class="linkFont"><b><a href="index.html">_design_more</a></b></p>
+</body>
+</html>
