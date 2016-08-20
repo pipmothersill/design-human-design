@@ -83,9 +83,14 @@
 	color: #FF0;
 }
 
+@font-face {
+    font-family: Exo-ExtraLight;
+    src: url(Exo-ExtraLight.ttf);
+}
+
 p.linkFont {
-	font-family: "Helvetica"; 
-	font-size: 24px;
+	font-family: Exo-ExtraLight; 
+	font-size: 18px;
 	margin-top: 10px;
     margin-bottom: 10px;
     margin-right: 10px;
