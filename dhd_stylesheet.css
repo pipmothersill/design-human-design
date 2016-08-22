@@ -1,85 +1,96 @@
-.mainFont {
-	font-family: "Sentinel Book";
+body {
+	background-color: #1A1A1A;
+}
+.linkFont {
+	font-weight: bold;
+}
+
+/* I changed .divElement to madlib-container, as it's more descriptive  of what it's doin there */
+
+.madlib-container  {
+	font-family: 'Lora', Georgia, serif;
 	font-size: 48px;
 	color: #FFF;
 	text-align: left;
 	line-height: 60px;
+
+	left:30%;
+	top:30%;
+	position:absolute;
+	bottom: 0;
+	right: 0;
+
+	/* some fanciness - made it opacity:0 so it'd be transparent til the JSON loads
+	in the JS, when the JSON loads, it adds the 'fadeIn' class, which makes the opacity:1;
+	the fade transitions because of the transition attribute*/
+	opacity: 0;
+	transition: opacity 1s;
 }
 
-/*#divElement{
-    width: 900px;
-    display: block;
-}*/
-
-@media (max-width: 1500px) {
-	.divElement{
-		left:30%;
-		top:30%;
-		position:absolute;
+@media (max-width: 1100px) {
+	.madlib-container{
+		/* you don't need to put these in here again - they'll already be applied from being part of the default above
+		stuff included in media query CSS rules overrides other rules */
+		/*position:absolute;
 		height:350px;
 		text-align:left;
-		width:900px;
+		right: 0;
+		*/
+	}
+
+	input[type="text"] {
+		width: 420px;
+		font-size: 48px;
 	}
 }
-
 @media (max-width: 768px) {
-	.divElement{
+	.madlib-container{
 		left:10%;
 		top:10%;
-		position:absolute;
+		font-size: 36px;
+		/* you don't need to put these in here again - they'll already be applied from being part of the default above
+		stuff included in media query CSS rules overrides other rules */
+		/*position:absolute;
 		height:350px;
 		text-align:left;
-		width:900px;
+		right: 0;
+		*/
+	}
+	input[type="text"] {
+		width: 300px;
+		font-size: 36px;
 	}
 }
 
-.artifact input[type="text"]{ 
-    background-color: transparent;  
+.madlib-container span input[type="text"]{
+	/* moved all the common attributes of all the spans in here */
     border-style: solid;  
     border-color: #1A1A1A; 
     outline:0; 
-    font-family: "Sentinel Book";
-	font-size: 48px;
+    /* using the google font Lora, similar to Sentinel */
+    /* in general for font families - it's good to include 1-2 fall-through backups. */
+    font-family: 'Lora', Georgia, serif;
+    font-size: 48px;
+    background-color: transparent;  
+
+}
+.artifacts input[type="text"]{ 
 	color: #09F;
 }
 
-.inspiration input[type="text"]{ 
-    background-color: transparent;  
-    border-style: solid;  
-    border-color: #1A1A1A; 
-    outline:0; 
-    font-family: "Sentinel Book";
-	font-size: 48px;
+.inspirations input[type="text"]{ 
 	color: #6C9;
 }
 
-.tension input[type="text"]{ 
-    background-color: transparent;  
-    border-style: solid;  
-    border-color: #1A1A1A; 
-    outline:0; 
-    font-family: "Sentinel Book";
-	font-size: 48px;
+.tensions input[type="text"]{ 
 	color: #C6C;
 }
 
-.technique input[type="text"]{ 
-    background-color: transparent;  
-    border-style: solid;  
-    border-color: #1A1A1A; 
-    outline:0; 
-    font-family: "Sentinel Book";
-	font-size: 48px;
+.techniques input[type="text"]{ 
 	color: #F90;
 }
 
 .medium input[type="text"] {
-    background-color: transparent;  
-    border-style: solid;  
-    border-color: #1A1A1A; 
-    outline:0; 
-    font-family: "Sentinel Book";
-	font-size: 48px;
 	color: #FF0;
 }
 
@@ -99,8 +110,24 @@ a:visited {
     color:white;
 }
 a:hover {
+	cursor: pointer;
     color: #666;
 }
 a:active {
     color: #666;
 }
+
+
+#print-button {
+	font-size: 24px;
+	font-family: Helvetica, sans-serif;
+	font-weight: bold;
+	position: absolute;
+	bottom: 0px;
+	right: 10px;
+}
+
+.fadeIn {
+	opacity: 1;
+}
+
