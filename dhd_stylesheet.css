@@ -23,8 +23,8 @@ body {
 	/* some fanciness - made it opacity:0 so it'd be transparent til the JSON loads
 	in the JS, when the JSON loads, it adds the 'fadeIn' class, which makes the opacity:1;
 	the fade transitions because of the transition attribute*/
-	opacity: 0;
-	transition: opacity 1s;
+	opacity: 0.35;
+	transition: opacity 0.3s;
 }
 
 @media (max-width: 1100px) {
@@ -102,6 +102,21 @@ p.linkFont {
     margin-right: 10px;
     margin-left: 10px;
 }
+#home-button {
+	position: absolute;
+	top: 15;
+	left: 15;
+}
+
+#home-button:hover {
+    opacity:0.5;
+}
+
+span.linkFont {
+	font-family: 'Lora';
+	font-style: italic; 
+}
+
 a:link {
     color: white;
 	text-decoration: none;
@@ -120,9 +135,6 @@ a:active {
 
 
 #print-button {
-	font-size: 20px;
-	font-family: 'Inconsolata';
-	font-weight: bold;
 	position: absolute;
 	bottom: 15;
 	right: 15;
