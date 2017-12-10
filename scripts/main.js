@@ -13,9 +13,17 @@ function randomize(category) {
  	$("#"+category+"_input").val(newValue);
 }
 
+//changes
+
+function get_spreadsheet_name(datalist) {
+
+	// $("#google_spreadsheet").click(function();
+	// var datalist = 
+}
+	
 $(document).ready(function(){
 
-	$.getJSON("https://spreadsheets.google.com/feeds/list/14h5eEvELe5eMX_6XF6G-tHDT8G1-FNJI3kADJE3ss3Q/od6/public/values?alt=json", function(data) {
+	$.getJSON(datalist_general, function(data) {
 	   //console.log to see stuff in developer tools
 	   console.log(data.feed.entry);
 	   // spreadsheet data comes in as a big array, let's set a global array to that for easy access
@@ -23,12 +31,12 @@ $(document).ready(function(){
 
 	   // the parameters passed in match the titles in your google spreadsheet - so we can easily pull out data in the randomize fn
 	   randomize('artifacts');
-	   randomize('tensions');
-	   randomize('techniques');
-	   randomize('medium');
 	   randomize('inspirations');
+	   randomize('experiences');
+	   randomize('attributes');
+	   randomize('medium');
 	   $(".madlib-container").addClass("fadeIn");
-
+	   
 	});
 
 $("#print-button").click(function(){

@@ -82,11 +82,11 @@ body {
 	color: #6C9;
 }
 
-.tensions input[type="text"]{ 
+.experiences input[type="text"]{ 
 	color: #C6C;
 }
 
-.techniques input[type="text"]{ 
+.attributes input[type="text"]{ 
 	color: #F90;
 }
 
@@ -109,6 +109,20 @@ p.linkFont {
 }
 
 #home-button:hover {
+    opacity:0.5;
+}
+
+#logo {
+	position: absolute;
+	bottom: 15;
+	left: 15;
+	margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#logo:hover {
     opacity:0.5;
 }
 
@@ -138,7 +152,80 @@ a:active {
 	position: absolute;
 	bottom: 15;
 	right: 15;
+	font-family: 'Inconsolata'; 
+	font-size: 20px;
+	margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
+
+#print-button:hover {
+    opacity:0.5;
+}
+
+/*changes*/
+#text-input {
+	position: absolute;
+	bottom: 15;
+	left: 15;
+}
+
+p.about {
+	position: absolute;
+	/*top: 15;*/
+	right: 15;
+	font-family: 'Inconsolata'; 
+	font-size: 20px;
+	margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+p.logo {
+	position: absolute;
+	bottom: 15;
+	left: 15;
+	font-family: 'Inconsolata';
+	color: rgb(0,0,0);
+	font-size: 20px;
+	margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.about_text {
+	position: absolute;
+	top: 75;
+	right: 250;
+	left: 250;
+	font-family: 'Inconsolata'; 
+	font-size: 16px;
+	margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    color: white;
+}
+
+.columns {
+    -webkit-columns: 100px 2; /* Chrome, Safari, Opera */
+    -moz-columns: 100px 2; /* Firefox */
+    columns: 100px 2;
+    position: absolute;
+	font-family: 'Inconsolata'; 
+	font-size: 20px;
+/*	top: 100;*/
+	right: 50;
+	left: 50;
+/*	margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;*/
+}
+/*changes*/
 
 .fadeIn {
 	opacity: 1;
