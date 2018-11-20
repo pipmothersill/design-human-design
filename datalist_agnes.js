@@ -1,1 +1,0 @@
-var datalist_general = "https://spreadsheets.google.com/feeds/list/1LKUHeUmlW4VRDNuDRgepwXLFbPaouP8cs7sR_-HS6jk/od6/public/values?alt=json"
