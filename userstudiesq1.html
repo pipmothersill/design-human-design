@@ -1,0 +1,81 @@
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+		<title>designhumandesign</title>
+		
+		<!-- I found this google font Lora that is fairly similar to Sentinel and a whole lot easier to include/embed :) 
+		https://fonts.google.com/specimen/Lora?category=Serif&selection.family=Lora
+		-->
+		<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
+		<!-- nice one moving your CSS to a file! -->
+		<link rel="stylesheet" type="text/css" href="dhd_stylesheet.css">
+
+		<!-- CDN embed of JQuery so we don't have to keep track of it locally - https://code.jquery.com/ -->
+		<script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+
+		<!-- found this library that lets you turn any webpage into an image - http://html2canvas.hertzen.com/ -->
+		<script type="text/javascript" src="scripts/html2canvas.min.js"></script>
+
+		<!-- moved your JS to its own lil home -->
+		<script type="text/javascript" src="scripts/datalist_userstudiesq1.js"></script>
+		<script type="text/javascript" src="scripts/main.js"></script>
+
+	</head>
+
+
+<body>
+	
+	<a id="home-button" href="userstudiesq1.html"><img border="0" alt="W3Schools" src="dhd_logo.png" width="225"</a>
+
+	<p class="about"><a href="about.html">?</a></p>
+
+	<div class="madlib-container">
+
+		<div>
+		<!-- made it so you're only dealing with a single function that figures things out with a parameter - in general, look for ways to not repeat yourself in webcode :) -->
+			<a href="javascript:randomize('artifacts')">Design </a>
+			<span class="artifacts"><input type="text" id="artifacts_input" onClick="this.select();"></span>
+		</div>
+
+		<div>
+			<a href="javascript:randomize('inspirations')">Inspired by </a>
+			<span class="inspirations"><input type="text" id="inspirations_input" onClick="this.select();"></span></span>
+		</div>
+
+		<div>
+			<a href="javascript:randomize('experiences')">That is </a>
+			<span class="experiences"><input type="text" id="experiences_input" onClick="this.select();"></span>
+		</div>
+
+		<div>
+			<a href="javascript:randomize('attributes')">Through </a>
+			<span class="attributes"><input type="text" id="attributes_input" onClick="this.select();"></span>
+		</div>
+
+		<div>
+			<a href="javascript:randomize('medium')">Using </a>
+			<span class="medium"><input type="text" id="medium_input" onClick="this.select();"></span>
+		</div>
+
+<!-- changes -->
+<!-- 		<a id="text-input">
+			<input type="text" name="datalist" id='datalist' />
+			<input type="button" value="submit" onclick="javascript:datalist('datalist')" />
+		</a> -->
+
+<!-- changes -->
+
+
+
+		<a id="print-button"><img border="0" alt="W3Schools" src="save_icon.png" width="65" height="65"</a>
+
+	</div>
+
+
+	<div>
+	</div>
+</body>
+</html>
