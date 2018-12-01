@@ -44,7 +44,9 @@ function getUrlParams() {
     return vars;
 }
 
-
+function hasKey() {
+	return getUrlParams().hasOwnProperty('key');
+}
 function loadKey() {
 	spreadsheetKey = getUrlParams().key;
 }
@@ -71,8 +73,10 @@ function get_spreadsheet_name(datalist) {
 	
 $(document).ready(function(){
 	
-	loadKey();
-	convertURL();
+	if (hasKey()) {
+		loadKey();
+		convertURL();
+	}
 	randomizeAll(datalist_general);
 
 	$("#print-button").click(function(){
