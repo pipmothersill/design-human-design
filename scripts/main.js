@@ -44,9 +44,21 @@ function getUrlParams() {
     return vars;
 }
 
-function saveToURL() {
-	window.location.href += "?key=" + spreadsheetKey;
 
+function loadKey() {
+	spreadsheetKey = getUrlParams().key;
+}
+
+function convertURL() {
+	datalist_general = "https://spreadsheets.google.com/feeds/list/" 
+						+ spreadsheetKey 
+						+ "/od6/public/values?alt=json";
+}
+
+
+function saveToURL() {
+	var separator = (window.location.href.indexOf("?") === -1) ? "?" : "&";
+	window.location.href = window.location.href + separator + "key=" + spreadsheetKey;
 }
 
 //changes
@@ -58,7 +70,9 @@ function get_spreadsheet_name(datalist) {
 }
 	
 $(document).ready(function(){
-
+	
+	loadKey();
+	convertURL();
 	randomizeAll(datalist_general);
 
 	$("#print-button").click(function(){
@@ -75,7 +89,7 @@ $(document).ready(function(){
 	});
 
 	$("#upload-button").click(function(){
-		$(".upload-modal").show();
+		$(".upload-modal").toggle();
 	});
 
 	$(".step button").click(function(){
@@ -85,7 +99,7 @@ $(document).ready(function(){
 
 	$(".step1 button").click(function(){
 		spreadsheetKey = $("#spreadsheet-key").val();
-		datalist_general = "https://spreadsheets.google.com/feeds/list/" + spreadsheetKey + "/od6/public/values?alt=json";
+		convertURL();
 		randomizeAll(datalist_general);
 		saveToURL();
 	});
