@@ -13,17 +13,8 @@ function randomize(category) {
  	$("#"+category+"_input").val(newValue);
 }
 
-//changes
-
-function get_spreadsheet_name(datalist) {
-
-	// $("#google_spreadsheet").click(function();
-	// var datalist = 
-}
-	
-$(document).ready(function(){
-
-	$.getJSON(datalist_general, function(data) {
+function randomizeAll(spreadsheetJsonURL) {
+	$.getJSON(spreadsheetJsonURL, function(data) {
 	   //console.log to see stuff in developer tools
 	   console.log(data.feed.entry);
 	   // spreadsheet data comes in as a big array, let's set a global array to that for easy access
@@ -38,20 +29,76 @@ $(document).ready(function(){
 	   $(".madlib-container").addClass("fadeIn");
 	   
 	});
+}
 
-$("#print-button").click(function(){
-	console.log("HEY")
-	html2canvas(document.body, {
-	  onrendered: function(canvas) {
-	     var a = document.createElement('a');
-        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
-        a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-        a.download = 'design_human_design.jpg';
-        a.click();
-	  }
+// pulls out spreadsheet key from url so link can be shared with others
+function getUrlParams() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+function saveToURL() {
+	window.location.href += "?key=" + spreadsheetKey;
+
+}
+
+//changes
+
+function get_spreadsheet_name(datalist) {
+
+	// $("#google_spreadsheet").click(function();
+	// var datalist = 
+}
+	
+$(document).ready(function(){
+
+	randomizeAll(datalist_general);
+
+	$("#print-button").click(function(){
+		console.log("HEY")
+		html2canvas(document.body, {
+		  onrendered: function(canvas) {
+		     var a = document.createElement('a');
+	        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+	        a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+	        a.download = 'design_human_design.jpg';
+	        a.click();
+		  }
+		});
 	});
-});
 
+	$("#upload-button").click(function(){
+		$(".upload-modal").show();
+	});
+
+	$(".step button").click(function(){
+		$(this).parent(".step").hide();
+		$(this).parent(".step").next().show();
+	});
+
+	$(".step1 button").click(function(){
+		spreadsheetKey = $("#spreadsheet-key").val();
+		datalist_general = "https://spreadsheets.google.com/feeds/list/" + spreadsheetKey + "/od6/public/values?alt=json";
+		randomizeAll(datalist_general);
+		saveToURL();
+	});
+
+	// get value from text area
+
+	// get list of words
+
+	// add to spreadsheet
+	// get size of spreadsheet
+	// generate list of modifications to spreadsheet
+	// authenticate sheets api
+	// call sheets api to update
 
 
 });
