@@ -148,7 +148,7 @@ a:active {
 }
 
 
-#print-button {
+#print-button, #upload-button {
 	position: absolute;
 	bottom: 15;
 	right: 15;
@@ -160,7 +160,11 @@ a:active {
     margin-left: 10px;
 }
 
-#print-button:hover {
+#upload-button {
+	right: 85;
+}
+
+#print-button:hover, #upload-button:hover {
     opacity:0.5;
 }
 
@@ -231,3 +235,20 @@ p.logo {
 	opacity: 1;
 }
 
+.upload-modal {
+	position: fixed;
+	width: 50vw;
+	height: 40vh;
+	top: 25vh;
+	left: 25vw;
+	background: white;
+	display: none;
+}
+
+.step {
+	display: none;
+}
+
+.step.step1 {
+	display: block;
+}
