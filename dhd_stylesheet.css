@@ -259,7 +259,7 @@ p.logo {
 	height: 40vh;
 	top: 25vh;
 	left: 25vw;
-	background: rgba(241, 241, 241, 0.767);
+	background: rgba(241, 241, 241, 0.867);
 	display: none;
 }
 
@@ -281,7 +281,7 @@ p.logo {
 	margin: 5px 0 15px 0;
 }
 
-#error-message {
+#error-message, #error-message-key {
     margin-top: 10px;
 }
 #file-name {
@@ -309,4 +309,13 @@ p.logo {
 }
 .step .prev {
 	right: 80px;	
+}
+
+.project-name-display {
+	font-family: 'Inconsolata', sans-serif;
+	font-style: italic;
+	position: absolute;
+    top: 23px;
+    left: 255px;
+	color: #fff;
 }

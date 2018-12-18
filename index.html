@@ -28,8 +28,8 @@
 
 <body>
 	
-	<a id="home-button" href="index.html"><img border="0" alt="W3Schools" src="dhd_logo.png" width="225"></a>
-
+	<a id="home-button" href="" onClick="window.location.reload()"><img border="0" alt="design(human)design" src="dhd_logo.png" width="225"></a>
+	<span class="project-name-display"></span>
 	<p class="about"><a href="about.html">?</a></p>
 
 	<div class="madlib-container">
@@ -76,6 +76,9 @@
 			<p>Upload the key to your customised Google spreadsheet:</p>
 			<input type="text" id="spreadsheet-key">
 			<button id="key-upload">Upload</button>
+			<span id="error-message-key"></span>
+			<br>
+			<p>How do i upload my own Google spreadsheet?  Read more <a href="">here</a></p>
 			<button class="prev">Previous</button>
 			<button class="next">Next</button>
 		</div>
@@ -104,7 +107,17 @@
 		</div>
 
 		<div class="step step5">
-			<p>You're done now bye</p>
+			<p>Words added to spreadsheet.  Click 
+				<a class="project-db-link" href="https://docs.google.com/spreadsheets/d/1-nKuL5c1Seye_DBPoY9qtme8ALSSE49OIlGPNmXGNAk">
+					here
+				</a> to view and/or edit it. Click 
+					<a class="project-email" href="maito:?subject=design(human)design%20website&%7BProject%20name%7D%20site%3A%20dhd%20url%20with%20spreadsheet%20key%20appended%0AView%20or%20edit%20the%20text%20database%20here%3A%20%7Bgoogle%20spreadsheet%20url%7D">
+						here
+					</a> to email link to 
+					<span class="project-name">
+						design(human)design
+					</span> site
+					</p>
 			<button id="close-modal">Ok</button>
 			<button class="prev">Previous</button>
 		</div>

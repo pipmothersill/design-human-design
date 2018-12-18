@@ -12,6 +12,7 @@ const categories = [
 const sheetsServer = 'http://designhumandesign.media.mit.edu:3000';
 const nltkServer = 'http://designhumandesign.media.mit.edu:8080';
 const masterSheetKey = '1r1HWyQ7goAWwoHd7O1x-ph1i7DuJAGwoqsnnj2c_lvE';
+var spreadsheetKey = '1cZw75v499DH_tryJGFyTHB3k8-Vr4AG7aV1Oj_OgWj0';
 var projectName = '';
 
 
@@ -28,7 +29,7 @@ function randomize(category) {
 }
 
 function randomizeAll(spreadsheetJsonURL) {
-	$.getJSON(spreadsheetJsonURL, function(data) {
+	return $.getJSON(spreadsheetJsonURL, function(data) {
 	   //console.log to see stuff in developer tools
 	   console.log(data.feed.entry);
 	   // spreadsheet data comes in as a big array, let's set a global array to that for easy access
@@ -55,10 +56,12 @@ function getUrlParams() {
 }
 
 function hasKey() {
-	return getUrlParams().hasOwnProperty('key') && getUrlParams().key.length > 1;
+	return (getUrlParams().hasOwnProperty('key') && getUrlParams().key.length > 1) || (getCookie('key') && getCookie('key').length == 44);
 }
 function loadKey() {
 	spreadsheetKey = getUrlParams().key;
+	document.getElementById('spreadsheet-key').value = spreadsheetKey;
+	document.getElementById('project-name').value = getCookie('name') || '';
 }
 
 function convertURL() {
@@ -68,13 +71,13 @@ function convertURL() {
 }
 
 function saveToURL() {
-	const separator = (window.location.href.indexOf("?") === -1) ? "?" : "&";
-	const newURL = window.location.origin + window.location.pathname + separator + "key=" + spreadsheetKey;
+	const newURL = window.location.origin + window.location.pathname + "?key=" + spreadsheetKey;
 	window.history.pushState({}, "", newURL);
 }
 
 function saveToCookie() {
-
+	setCookie('name', projectName);
+	setCookie('key', spreadsheetKey);
 }	
 
 function saveToSheets(dataToSave) {
@@ -94,7 +97,24 @@ function saveToSheets(dataToSave) {
 	});
 }
 
+function setLinks() {
+	if (projectName.length === 0) {
+		projectName = getCookie('name');
+	}
+	document.querySelector('.project-db-link')
+		.setAttribute('href', `https://docs.google.com/spreadsheets/d/${spreadsheetKey}`);
+	const subject = encodeURIComponent(`${projectName} design(human)design website`);
+	const body = encodeURIComponent(`${projectName} site: ${window.location.href}\nView or edit the database here: https://docs.google.com/spreadsheets/d/${spreadsheetKey}`);
+	document.querySelector('.project-email')
+		.setAttribute('href', `mailto:?subject=${subject}&body=${body}`);
+	document.querySelector('.project-name')
+		.setAttribute('href', projectName);
+	document.querySelector('.project-name-display').innerHTML = projectName; 
+}
+
+
 function saveToMasterSpreadsheet(projectKey) {
+	projectName = document.getElementById('project-name').value;
 	ajax(sheetsServer + '/append', "POST", {
 		masterKey: masterSheetKey,
 		projectKey: projectKey,
@@ -126,6 +146,7 @@ $(document).ready(function(){
 		loadKey();
 		convertURL();
 	}
+	setLinks();
 	randomizeAll(datalist_general);
 
 	$("#print-button").click(function(){
@@ -157,12 +178,29 @@ $(document).ready(function(){
 
 	$("#key-upload").click(function(event) {
 		event.preventDefault();
-
-		spreadsheetKey = $("#spreadsheet-key").val();
-		convertURL();
-		randomizeAll(datalist_general);
-		saveToURL();
-		saveToMasterSpreadsheet(spreadsheetKey);
+		let inputedKey = $("#spreadsheet-key").val();
+		let oldKey = spreadsheetKey;
+		if(inputedKey.length !== 44) {
+			document.querySelector('#error-message-key').style.display = 'block';
+			document.querySelector('#error-message-key').innerText = 'Error : Invalid key';
+			return;
+		} else {
+			
+			spreadsheetKey = inputedKey;
+			convertURL();
+			randomizeAll(datalist_general).then(response => {
+				document.querySelector('#error-message-key').style.display = 'none';
+				saveToURL();
+				saveToMasterSpreadsheet(spreadsheetKey);
+				setLinks();
+				saveToCookie();
+			}).catch(error => {
+				document.querySelector('#error-message-key').style.display = 'block';
+				document.querySelector('#error-message-key').innerText = 'Error : Invalid key';
+				spreadsheetKey = oldKey;
+				convertURL();
+			});
+		}
 	});
 
 	$("#close-modal").click(function(event) {
