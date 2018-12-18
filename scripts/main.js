@@ -177,26 +177,25 @@ $(document).ready(function(){
 	});
 
 	$("#key-upload").click(function(event) {
+		document.querySelector('#status-message-key').innerText = 'Loading...';
 		event.preventDefault();
 		let inputedKey = $("#spreadsheet-key").val();
 		let oldKey = spreadsheetKey;
 		if(inputedKey.length !== 44) {
-			document.querySelector('#error-message-key').style.display = 'block';
-			document.querySelector('#error-message-key').innerText = 'Error : Invalid key';
+			document.querySelector('#status-message-key').innerText = 'Error : Invalid key';
 			return;
 		} else {
 			
 			spreadsheetKey = inputedKey;
 			convertURL();
 			randomizeAll(datalist_general).then(response => {
-				document.querySelector('#error-message-key').style.display = 'none';
+				document.querySelector('#status-message-key').innerText = 'Success: spreadsheet loaded';
 				saveToURL();
 				saveToMasterSpreadsheet(spreadsheetKey);
 				setLinks();
 				saveToCookie();
 			}).catch(error => {
-				document.querySelector('#error-message-key').style.display = 'block';
-				document.querySelector('#error-message-key').innerText = 'Error : Invalid key';
+				document.querySelector('#status-message-key').innerText = 'Error : Invalid key';
 				spreadsheetKey = oldKey;
 				convertURL();
 			});
@@ -216,12 +215,10 @@ $(document).ready(function(){
 		var file = this.files[0],
 			pdf_mime_type = 'application/pdf';
 		
-		document.querySelector('#error-message').style.display = 'none';
 		
 		// Validate MIME type
 		if(file.type !== pdf_mime_type) {
-			document.querySelector('#error-message').style.display = 'block';
-			document.querySelector('#error-message').innerText = 'Error : Only PDF files allowed';
+			document.querySelector('#status-message-file').innerText = 'Error : Only PDF files allowed';
 			return;
 		}
 
@@ -231,26 +228,40 @@ $(document).ready(function(){
 
 	// Upload via AJAX
 	document.querySelector('#upload-file-button').addEventListener('click', function() {
+		document.querySelector('#status-message-file').innerText = 'Loading...';
 		var data = new FormData();
 
 		data.append('file', document.querySelector('#upload-file').files[0]);
 
-		ajax(nltkServer + '/upload', "POST", data, false).then(response => response.json()).then(response => {
+		ajax(nltkServer + '/upload', "POST", data, false)
+		.then(response => response.json())
+		.then(response => {
+			document.querySelector('#status-message-file').innerText = `File parsed and loaded!`
 			document.querySelector('#file-result').innerHTML = JSON.stringify(response);
 			console.log(response);
 			saveToSheets(response);
-		});
+		})
+		.catch(err => {
+			document.querySelector('#status-message-file').innerText = `Error: ${JSON.stringify(err)}`
+			
+		})
 	});
 
 	document.querySelector('#upload-text-button').addEventListener('click', function() {
+		document.querySelector('#status-message-text').innerText = 'Loading...';
 		const textInput = encodeURIComponent(document.querySelector('#pasted-text').value);
 
-		ajax(nltkServer, "POST", {
-			text: textInput
-		}).then(response => response.json()).then(response => {
+		ajax(nltkServer, "POST", {text: textInput})
+		.then(response => response.json())
+		.then(response => {
+			document.querySelector('#status-message-text').innerText = 'Text parsed and loaded!';
 			document.querySelector('#text-result').innerHTML = JSON.stringify(response);
 			console.log(response);
 			saveToSheets(response);
+		})
+		.catch(err => {
+			document.querySelector('#status-message-text').innerText = `Error: ${JSON.stringify(err)}`
+			
 		})
 	});
 });
