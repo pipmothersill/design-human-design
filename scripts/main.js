@@ -8,8 +8,8 @@ const categories = [
 	'attributes',
 	'medium',
 ];
-const sheetsServer = 'http://designhumandesign.media.mit.edu:3000';
-const nltkServer = 'http://designhumandesign.media.mit.edu:8080';
+const sheetsServer = 'http://localhost:3000';
+const nltkServer = 'http://localhost:5000';
 const masterSheetKey = '1r1HWyQ7goAWwoHd7O1x-ph1i7DuJAGwoqsnnj2c_lvE';
 var projectName = '';
 
@@ -195,7 +195,7 @@ $(document).ready(function(){
 
 		data.append('file', document.querySelector('#upload-file').files[0]);
 
-		ajax(sheetsServer + '/upload', "POST", data).then(response => {
+		ajax(nltkServer + '/upload', "POST", data).then(response => response.json()).then(response => {
 			document.querySelector('#file-result').innerHTML = JSON.stringify(response);
 			console.log(response);
 			saveToSheets(response);
@@ -205,7 +205,9 @@ $(document).ready(function(){
 	document.querySelector('#upload-text-button').addEventListener('click', function() {
 		const textInput = encodeURIComponent(document.querySelector('#pasted-text').value);
 
-		ajax(nltkServer + '?text=' + textInput, "GET", {}).then(response => {
+		ajax(nltkServer, "POST", {
+			text: textInput
+		}).then(response => response.json()).then(response => {
 			document.querySelector('#text-result').innerHTML = JSON.stringify(response);
 			console.log(response);
 			saveToSheets(response);
@@ -234,12 +236,14 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function ajax(url, method, data) {
+function ajax(url, method, data = {}) {
 	let params = {
 		method: method,
 		mode: "cors",
 		cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
 		credentials: "same-origin", // include, *same-origin, omit
+		redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // no-referrer, *client
 	}
 	if (Object.keys(data).length !== 0) {
 		params.body = JSON.stringify(data);
