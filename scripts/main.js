@@ -59,7 +59,7 @@ function hasKey() {
 	return (getUrlParams().hasOwnProperty('key') && getUrlParams().key.length > 1) || (getCookie('key') && getCookie('key').length == 44);
 }
 function loadKey() {
-	spreadsheetKey = getUrlParams().key;
+	spreadsheetKey = getUrlParams().key || getCookie('key');
 	document.getElementById('spreadsheet-key').value = spreadsheetKey;
 	document.getElementById('project-name').value = getCookie('name') || '';
 }
