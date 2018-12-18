@@ -29,6 +29,7 @@ function randomize(category) {
 }
 
 function randomizeAll(spreadsheetJsonURL) {
+	document.querySelector(".madlib-container").classList.remove('fadeIn')
 	return $.getJSON(spreadsheetJsonURL, function(data) {
 	   //console.log to see stuff in developer tools
 	   console.log(data.feed.entry);
@@ -37,7 +38,7 @@ function randomizeAll(spreadsheetJsonURL) {
 
 	   // the parameters passed in match the titles in your google spreadsheet - so we can easily pull out data in the randomize fn
 	   categories.map(randomize);
-	   $(".madlib-container").addClass("fadeIn");
+	   document.querySelector(".madlib-container").classList.add('fadeIn')
 	   
 	});
 }
@@ -163,14 +164,18 @@ $(document).ready(function(){
 
 	$("#upload-button").click(function(event) {
 		event.preventDefault();
-		
-		$(".upload-modal").toggle();
+		let modal = document.querySelector(".upload-modal");
+		let hidden = (modal.classList.contains('hidden'));
+		hidden ? modal.classList.remove('hidden') : modal.classList.add('hidden');
+		document.querySelectorAll('.step').forEach(element => element.style.display = 'none');
+		document.querySelector('.step.step1').style.display = 'block';
 	});
 
 	$(".step .next").click(function(event) {
 		$(this).parent(".step").hide();
 		$(this).parent(".step").next().show();
 	});
+
 	$(".step .prev").click(function(event) {
 		$(this).parent(".step").hide();
 		$(this).parent(".step").prev().show();
@@ -180,12 +185,12 @@ $(document).ready(function(){
 		document.querySelector('#status-message-key').innerText = 'Loading...';
 		event.preventDefault();
 		let inputedKey = $("#spreadsheet-key").val();
+		inputedKey = inputedKey.split('/').filter(URLPart => URLPart.length === 44)[0];
 		let oldKey = spreadsheetKey;
 		if(inputedKey.length !== 44) {
 			document.querySelector('#status-message-key').innerText = 'Error : Invalid key';
 			return;
 		} else {
-			
 			spreadsheetKey = inputedKey;
 			convertURL();
 			randomizeAll(datalist_general).then(response => {
@@ -205,7 +210,7 @@ $(document).ready(function(){
 	$("#close-modal").click(function(event) {
 		event.preventDefault();
 
-		$(".upload-modal").hide();
+		document.querySelector(".upload-modal").classList.add('hidden');
 
 	})
 
