@@ -9,8 +9,8 @@ const categories = [
 	'medium',
 ];
 
-const sheetsServer = 'http://localhost:3000';
-const nltkServer = 'http://localhost:5000';
+const sheetsServer = 'http://designhumandesign.media.mit.edu:3000';
+const nltkServer = 'http://designhumandesign.media.mit.edu:8080';
 const masterSheetKey = '1r1HWyQ7goAWwoHd7O1x-ph1i7DuJAGwoqsnnj2c_lvE';
 var projectName = '';
 
