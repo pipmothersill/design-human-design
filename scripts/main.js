@@ -8,6 +8,9 @@ const categories = [
 	'attributes',
 	'medium',
 ];
+const sheetsServer = 'http://localhost:3000';
+const nltkServer = 'http://localhost:8080';
+const masterSheetKey = '1r1HWyQ7goAWwoHd7O1x-ph1i7DuJAGwoqsnnj2c_lvE';
 
 function randomize(category) {
 	//choose a random entry of our madlib_data of the correct category
@@ -69,6 +72,31 @@ function saveToURL() {
 function saveToCookie() {
 
 }	
+
+function saveToSheet(dataToSave) {
+	const shape = getSheetShape();
+	const updates = {};
+	for (let i = 0; i < categories.length; i++) {
+		const categoryName = categories[i];
+		updates[categoryName] = {
+			firstEmptyRow: shape[categoryName],
+			newEntries: dataToSave[categoryName]
+		}
+		
+	}
+	ajax(sheetsServer + '/update', "POST", {
+		id: spreadsheetKey,
+		updates: updates
+	});
+}
+
+function saveToMasterSpreadsheet(projectName, projectKey) {
+	ajax(sheetsServer + '/append', "POST", {
+		masterKey: masterSheetKey,
+		projectKey: projectKey,
+		projectName: projectName
+	});
+}
 
 function getSheetShape() {
 	let shape = {};
@@ -139,25 +167,6 @@ $(document).ready(function(){
 
 	})
 
-	// get value from text area
-
-	// get list of words
-
-	// add to spreadsheet
-	// get size of spreadsheet
-	// generate list of modifications to spreadsheet
-	// authenticate sheets api
-	// call sheets api to update
-
-
-
-
-
-	// // Show the file browse dialog
-	// document.querySelector('#choose-upload-button').addEventListener('click', function() {
-	// 	document.querySelector('#upload-file').click();
-	// });
-
 
 	// When a new file is selected
 	document.querySelector('#upload-file').addEventListener('change', function() {
@@ -173,94 +182,31 @@ $(document).ready(function(){
 			return;
 		}
 
-		// // Max 2 Mb allowed
-		// if(file.size > 2*1024*1024) {
-		// 	document.querySelector('#error-message').style.display = 'block';
-		// 	document.querySelector('#error-message').innerText = 'Error : Exceeded size 2MB';
-		// 	return;
-		// }
-
-		// document.querySelector('#upload-choose-container').style.display = 'none';
-		// document.querySelector('#upload-file-final-container').style.display = 'block';
 		document.querySelector('#file-name').innerText = file.name;
 	});
 
 
-	// // Cancel button event
-	// document.querySelector('#cancel-button').addEventListener('click', function() {
-	// 	document.querySelector('#error-message').style.display = 'none';
-	// 	document.querySelector('#upload-choose-container').style.display = 'block';
-	// 	document.querySelector('#upload-file-final-container').style.display = 'none';
-
-	// 	document.querySelector('#upload-file').setAttribute('value', '');
-	// });
-
-
 	// Upload via AJAX
 	document.querySelector('#upload-file-button').addEventListener('click', function() {
-		var data = new FormData(),
-			request;
+		var data = new FormData();
 
 		data.append('file', document.querySelector('#upload-file').files[0]);
 
-		var request = new XMLHttpRequest();
-		request.addEventListener('load', function(e) {
-			// document.querySelector('#upload-progress').style.display = 'none';
-
-			if(request.response.error == 1) {
-				document.querySelector('#error-message').innerText = request.response.message;
-				document.querySelector('#error-message').style.display = 'block';
-			}
-			else if(request.response.error == 0) {
-				// document.querySelector('#cancel-button').click();
-				document.querySelector('#file-result').innerHTML = JSON.stringify(request.response);
-				
-			}
-			document.querySelector('#file-result').innerHTML = JSON.stringify(request.response);
-			console.log(request.response);
+		ajax(sheetsServer + '/upload', "POST", data).then(response => {
+			document.querySelector('#file-result').innerHTML = JSON.stringify(response);
+			console.log(response);
+			saveToSheets(response);
 		});
-		// request.upload.addEventListener('progress', function(e) {
-		// 	var percent_complete = (e.loaded / e.total)*100;
-			
-		// 	document.querySelector('#upload-percentage').innerText = percent_complete;
-		// 	document.querySelector('#upload-progress').style.display = 'block';
-		// });
-		request.responseType = 'json';
-		request.open('post', 'http://localhost:8080/upload'); 
-		request.send(data); 
 	});
 
 	document.querySelector('#upload-text-button').addEventListener('click', function() {
-		fetch(url, {
-			method: "GET",
-			mode: "cors",
-			cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-			credentials: "same-origin", // include, *same-origin, omit
-			headers: {
-				"Content-Type": "application/json; charset=utf-8",
-				// "Content-Type": "application/x-www-form-urlencoded",
-			},
-			body: JSON.stringify(data), // body data type must match "Content-Type" header
-		})
-		.then(response => response.json()); // parses response to JSON
-		
-		var request = new XMLHttpRequest();
-		request.addEventListener('load', function(e) {
+		const textInput = encodeURIComponent(document.querySelector('#pasted-text').value);
 
-			document.querySelector('#text-result').innerHTML = JSON.stringify(request.response);
-			console.log(request.response);
-			saveResponseToSheets(request.response);
-		});
-		// request.upload.addEventListener('progress', function(e) {
-		// 	var percent_complete = (e.loaded / e.total)*100;
-			
-		// 	document.querySelector('#upload-percentage').innerText = percent_complete;
-		// 	document.querySelector('#upload-progress').style.display = 'block';
-		// });
-		request.responseType = 'json';
-		const textInput = encodeURIComponent(document.querySelector('#pasted-text').value)
-		request.open('get', 'http://localhost:8080/?text=' + textInput); 
-		request.send(); 
+		ajax(nltkServer + '?text=' + textInput, "GET", {}).then(response => {
+			document.querySelector('#text-result').innerHTML = JSON.stringify(response);
+			console.log(response);
+			saveToSheets(response);
+		})
 	});
 });
 
@@ -285,6 +231,15 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function saveResponseToSheets(response) {
-
+function ajax(url, method, data) {
+	return fetch(url, {
+		method: method,
+		mode: "cors",
+		cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+		credentials: "same-origin", // include, *same-origin, omit
+		headers: {
+			"Content-Type": "application/json; charset=utf-8",
+		},
+		body: JSON.stringify(data), // body data type must match "Content-Type" header
+	});
 }
