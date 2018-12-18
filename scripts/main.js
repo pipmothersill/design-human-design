@@ -11,6 +11,8 @@ const categories = [
 const sheetsServer = 'http://localhost:3000';
 const nltkServer = 'http://localhost:8080';
 const masterSheetKey = '1r1HWyQ7goAWwoHd7O1x-ph1i7DuJAGwoqsnnj2c_lvE';
+var projectName = '';
+
 
 function randomize(category) {
 	//choose a random entry of our madlib_data of the correct category
@@ -73,7 +75,7 @@ function saveToCookie() {
 
 }	
 
-function saveToSheet(dataToSave) {
+function saveToSheets(dataToSave) {
 	const shape = getSheetShape();
 	const updates = {};
 	for (let i = 0; i < categories.length; i++) {
@@ -90,7 +92,7 @@ function saveToSheet(dataToSave) {
 	});
 }
 
-function saveToMasterSpreadsheet(projectName, projectKey) {
+function saveToMasterSpreadsheet(projectKey) {
 	ajax(sheetsServer + '/append', "POST", {
 		masterKey: masterSheetKey,
 		projectKey: projectKey,
@@ -158,6 +160,7 @@ $(document).ready(function(){
 		convertURL();
 		randomizeAll(datalist_general);
 		saveToURL();
+		saveToMasterSpreadsheet(spreadsheetKey);
 	});
 
 	$("#close-modal").click(function(event) {
