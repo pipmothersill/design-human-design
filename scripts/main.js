@@ -8,16 +8,18 @@ const categories = [
 	'attributes',
 	'medium',
 ];
-const sheetsServer = 'http://designhumandesign.media.mit.edu:3000';
-const nltkServer = 'http://designhumandesign.media.mit.edu:8080';
+
+const sheetsServer = 'http://localhost:3000';
+const nltkServer = 'http://localhost:5000';
 const masterSheetKey = '1r1HWyQ7goAWwoHd7O1x-ph1i7DuJAGwoqsnnj2c_lvE';
 var projectName = '';
 
 
 function randomize(category) {
+	const sheetShape = getSheetShape();
 	//choose a random entry of our madlib_data of the correct category
-	var random_i = Math.floor( Math.random() * madlib_data.length );
-	var newValue = madlib_data[random_i]['gsx$'+category]['$t'];
+	const random_i = Math.floor( Math.random() * sheetShape[category] );
+	const newValue = madlib_data[random_i]['gsx$'+category]['$t'];
 
 	// use JQuery for more readable versions of document.getElementById...
 	// ie. $(".aclass") gets all elements with that class, $("#anid") gets the element with that id
@@ -195,7 +197,7 @@ $(document).ready(function(){
 
 		data.append('file', document.querySelector('#upload-file').files[0]);
 
-		ajax(nltkServer + '/upload', "POST", data).then(response => response.json()).then(response => {
+		ajax(nltkServer + '/upload', "POST", data, false).then(response => response.json()).then(response => {
 			document.querySelector('#file-result').innerHTML = JSON.stringify(response);
 			console.log(response);
 			saveToSheets(response);
@@ -236,7 +238,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function ajax(url, method, data = {}) {
+function ajax(url, method, data = {}, isJSON = true) {
 	let params = {
 		method: method,
 		mode: "cors",
@@ -245,11 +247,15 @@ function ajax(url, method, data = {}) {
 		redirect: "follow", // manual, *follow, error
         referrer: "no-referrer", // no-referrer, *client
 	}
-	if (Object.keys(data).length !== 0) {
+	if (isJSON && Object.keys(data).length !== 0) {
 		params.body = JSON.stringify(data);
 		params.headers = {
 			"Content-Type": "application/json; charset=utf-8",
 		};
 	}
+	if (!isJSON) {
+		params.body = data;
+	}
+	
 	return fetch(url, params);
 }
