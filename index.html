@@ -34,41 +34,31 @@
 
 	<div class="madlib-container">
 
-		<div>
+		<div class="madlib-category">
 		<!-- made it so you're only dealing with a single function that figures things out with a parameter - in general, look for ways to not repeat yourself in webcode :) -->
 			<a href="javascript:randomize('artifacts')">Design </a>
-			<span class="artifacts"><input type="text" id="artifacts_input" onClick="this.select();"></span>
+			<span class="artifacts"><input class="madlib-input" type="text" id="artifacts_input" onClick="this.select();"></span>
 		</div>
 
-		<div>
+		<div class="madlib-category">
 			<a href="javascript:randomize('inspirations')">Inspired by </a>
-			<span class="inspirations"><input type="text" id="inspirations_input" onClick="this.select();"></span></span>
+			<span class="inspirations"><input class="madlib-input" type="text" id="inspirations_input" onClick="this.select();"></span></span>
 		</div>
 
-		<div>
+		<div class="madlib-category">
 			<a href="javascript:randomize('experiences')">That is </a>
-			<span class="experiences"><input type="text" id="experiences_input" onClick="this.select();"></span>
+			<span class="experiences"><input class="madlib-input" type="text" id="experiences_input" onClick="this.select();"></span>
 		</div>
 
-		<div>
+		<div class="madlib-category">
 			<a href="javascript:randomize('attributes')">Through </a>
-			<span class="attributes"><input type="text" id="attributes_input" onClick="this.select();"></span>
+			<span class="attributes"><input class="madlib-input" type="text" id="attributes_input" onClick="this.select();"></span>
 		</div>
 
-		<div>
+		<div class="madlib-category">
 			<a href="javascript:randomize('medium')">Using </a>
-			<span class="medium"><input type="text" id="medium_input" onClick="this.select();"></span>
+			<span class="medium"><input class="madlib-input" type="text" id="medium_input" onClick="this.select();"></span>
 		</div>
-
-<!-- changes -->
-<!-- 		<a id="text-input">
-			<input type="text" name="datalist" id='datalist' />
-			<input type="button" value="submit" onclick="javascript:datalist('datalist')" />
-		</a> -->
-
-<!-- changes -->
-
-
 
 		<a id="print-button"><img border="0" alt="Save" src="save_icon.png" width="65" height="65"></a>
 
@@ -78,30 +68,45 @@
 
 	<div class="upload-modal">
 		<div class="step step1">
+			<button class="next">Next</button>
+			<p>name your project</p>
+			<input type="text" id="project-name">
+		</div>
+		<div class="step step2">
 			<p>Upload the key to your customised Google spreadsheet:</p>
 			<input type="text" id="spreadsheet-key">
-			<button>Upload</button>
-		</div>
-
-		<div class="step step2">
-			<p>text2</p>
-			<textarea id="pasted-text"></textarea>
-			<button>Next</button>
+			<button id="key-upload">Upload</button>
+			<button class="prev">Previous</button>
+			<button class="next">Next</button>
 		</div>
 
 		<div class="step step3">
-			<p>text3</p>
-			<button>Next</button>
+			<button class="prev">Previous</button>
+			<button class="next">Next</button>
+			<p>write some text</p>
+			<textarea id="pasted-text"></textarea>
+			<button id="upload-text-button">Upload</button>
+			<span id="text-result"></span>
 		</div>
 
 		<div class="step step4">
-			<p>text4</p>
-			<button>Next</button>
+			<button class="prev">Previous</button>
+			<button class="next">Next</button>
+			<p>upload a file</p>
+			<label for="upload-file" id="upload-file-label">
+					Upload a file
+			</label>
+			<input id="upload-file" type="file" style="display: none;">
+			<i id="file-name"></i>
+			<span id="error-message"></span>
+			<button id="upload-file-button">Upload</button>
+			<span id="file-result"></span>
 		</div>
 
 		<div class="step step5">
-			<p>text5</p>
-			<button>Next</button>
+			<p>You're done now bye</p>
+			<button id="close-modal">Ok</button>
+			<button class="prev">Previous</button>
 		</div>
 
 	</div>

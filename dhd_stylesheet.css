@@ -1,22 +1,79 @@
+/* reset styles */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
 body {
 	background-color: #1A1A1A;
 }
+
 .linkFont {
 	font-weight: bold;
 }
 
-/* I changed .divElement to madlib-container, as it's more descriptive  of what it's doin there */
+p.linkFont {
+	font-family: 'Inconsolata';
+	font-size: 22px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 10px;
+}
 
-.madlib-container  {
+span.linkFont {
+	font-family: 'Lora';
+	font-style: italic;
+}
+
+.madlib-container {
 	font-family: 'Lora', Georgia, serif;
 	font-size: 48px;
 	color: #FFF;
 	text-align: left;
 	line-height: 60px;
 
-	left:30%;
-	top:30%;
-	position:absolute;
+	left: 30%;
+	top: 30%;
+	position: absolute;
 	bottom: 0;
 	right: 0;
 
@@ -28,25 +85,16 @@ body {
 }
 
 @media (max-width: 1100px) {
-	.madlib-container{
-		/* you don't need to put these in here again - they'll already be applied from being part of the default above
-		stuff included in media query CSS rules overrides other rules */
-		/*position:absolute;
-		height:350px;
-		text-align:left;
-		right: 0;
-		*/
-	}
-
-	input[type="text"] {
+	.madlib-input {
 		width: 420px;
 		font-size: 48px;
 	}
 }
+
 @media (max-width: 768px) {
-	.madlib-container{
-		left:10%;
-		top:10%;
+	.madlib-container {
+		left: 10%;
+		top: 10%;
 		font-size: 36px;
 		/* you don't need to put these in here again - they'll already be applied from being part of the default above
 		stuff included in media query CSS rules overrides other rules */
@@ -56,179 +104,147 @@ body {
 		right: 0;
 		*/
 	}
-	input[type="text"] {
+
+	.madlib-input {
 		width: 300px;
 		font-size: 36px;
 	}
 }
 
-.madlib-container span input[type="text"]{
+.madlib-container .madlib-input {
 	/* moved all the common attributes of all the spans in here */
-    border-style: solid;  
-    border-color: #1A1A1A; 
-    outline:0; 
-    /* using the google font Lora, similar to Sentinel */
-    /* in general for font families - it's good to include 1-2 fall-through backups. */
-    font-family: 'Lora', Georgia, serif;
-    font-size: 48px;
-    background-color: transparent;  
+	border-style: solid;
+	border-color: #1A1A1A;
+	outline: 0;
+	/* using the google font Lora, similar to Sentinel */
+	/* in general for font families - it's good to include 1-2 fall-through backups. */
+	font-family: 'Lora', Georgia, serif;
+	font-size: 48px;
+	background-color: transparent;
 
 }
-.artifacts input[type="text"]{ 
+
+.artifacts .madlib-input {
 	color: #09F;
 }
 
-.inspirations input[type="text"]{ 
+.inspirations .madlib-input {
 	color: #6C9;
 }
 
-.experiences input[type="text"]{ 
+.experiences .madlib-input {
 	color: #C6C;
 }
 
-.attributes input[type="text"]{ 
+.attributes .madlib-input {
 	color: #F90;
 }
 
-.medium input[type="text"] {
+.medium .madlib-input {
 	color: #FF0;
 }
 
-p.linkFont {
-	font-family: 'Inconsolata'; 
-	font-size: 22px;
-	margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    margin-left: 10px;
-}
+
 #home-button {
 	position: absolute;
-	top: 15;
-	left: 15;
+	top: 15px;
+	left: 15px;
 }
 
 #home-button:hover {
-    opacity:0.5;
+	opacity: 0.5;
 }
 
 #logo {
 	position: absolute;
-	bottom: 15;
-	left: 15;
-	margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    margin-left: 10px;
+	bottom: 15px;
+	left: 15px;
+	margin: 10px;
 }
 
 #logo:hover {
-    opacity:0.5;
+	opacity: 0.5;
 }
 
-span.linkFont {
-	font-family: 'Lora';
-	font-style: italic; 
-}
 
-a:link {
-    color: white;
+a:link, a:visited {
+	color: white;
 	text-decoration: none;
 }
-a:visited {
-    color:white;
-    	text-decoration: none;
-}
-a:hover {
+
+a:hover, a:active {
 	cursor: pointer;
-    color: #666;
-}
-a:active {
-    color: #666;
+	color: #666;
 }
 
-
-#print-button, #upload-button {
+#print-button,
+#upload-button {
 	position: absolute;
 	bottom: 15;
 	right: 15;
-	font-family: 'Inconsolata'; 
+	font-family: 'Inconsolata';
 	font-size: 20px;
 	margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    margin-left: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 10px;
 }
 
 #upload-button {
 	right: 85;
 }
 
-#print-button:hover, #upload-button:hover {
-    opacity:0.5;
-}
-
-/*changes*/
-#text-input {
-	position: absolute;
-	bottom: 15;
-	left: 15;
+#print-button:hover,
+#upload-button:hover {
+	opacity: 0.5;
 }
 
 p.about {
 	position: absolute;
 	/*top: 15;*/
-	right: 15;
-	font-family: 'Inconsolata'; 
+	right: 15px;
+	font-family: 'Inconsolata';
 	font-size: 20px;
-	margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    margin-left: 10px;
+	margin: 18px;
 }
 
 p.logo {
 	position: absolute;
-	bottom: 15;
-	left: 15;
+	bottom: 15px;
+	left: 15px;
 	font-family: 'Inconsolata';
-	color: rgb(0,0,0);
+	color: rgb(0, 0, 0);
 	font-size: 20px;
 	margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    margin-left: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 10px;
 }
 
 .about_text {
 	position: absolute;
-	top: 75;
-	right: 250;
-	left: 250;
-	font-family: 'Inconsolata'; 
+	top: 75px;
+	right: 250px;
+	left: 250px;
+	font-family: 'Inconsolata';
 	font-size: 16px;
-	margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    margin-left: 10px;
-    color: white;
+	margin: 10px;
+	color: white;
 }
 
 .columns {
-    -webkit-columns: 100px 2; /* Chrome, Safari, Opera */
-    -moz-columns: 100px 2; /* Firefox */
-    columns: 100px 2;
-    position: absolute;
-	font-family: 'Inconsolata'; 
+	-webkit-columns: 100px 2;
+	/* Chrome, Safari, Opera */
+	-moz-columns: 100px 2;
+	/* Firefox */
+	columns: 100px 2;
+	position: absolute;
+	font-family: 'Inconsolata';
 	font-size: 20px;
-/*	top: 100;*/
-	right: 50;
-	left: 50;
-/*	margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    margin-left: 10px;*/
+	right: 50px;
+	left: 50px;
 }
+
 /*changes*/
 
 .fadeIn {
@@ -236,13 +252,46 @@ p.logo {
 }
 
 .upload-modal {
+	font-family: 'Lora', Georgia, serif;
+	padding: 20px;
 	position: fixed;
 	width: 50vw;
 	height: 40vh;
 	top: 25vh;
 	left: 25vw;
-	background: white;
+	background: rgba(241, 241, 241, 0.767);
 	display: none;
+}
+
+.upload-modal button,
+.upload-modal input,
+.upload-modal select,
+.upload-modal textarea,
+.upload-modal label {
+	font-family: 'Inconsolata', Helvetica, sans-serif;
+	font-size: 100%;
+	background: white;
+	border: 1px solid grey;
+	border-radius: 5px;
+	padding: 3px 10px 5px 10px;
+	margin: 10px 5px 10px 0;
+}
+
+.upload-modal p {
+	margin: 5px 0 15px 0;
+}
+
+#error-message {
+    margin-top: 10px;
+}
+#file-name {
+	font-family: 'Inconsolata', Helvetica, sans-serif;
+	font-style: italic;
+}
+#pasted-text {
+    width: 100%;
+    height: 120px;
+	display: block;
 }
 
 .step {
@@ -251,4 +300,13 @@ p.logo {
 
 .step.step1 {
 	display: block;
+}
+
+.step .next, .step .prev {
+	position: absolute;
+	bottom: 10px;
+	right: 20px;
+}
+.step .prev {
+	right: 80px;	
 }
