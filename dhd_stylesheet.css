@@ -1,17 +1,85 @@
 /* reset styles */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -19,34 +87,54 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
 	display: block;
 }
+
 body {
 	line-height: 1;
 }
-ol, ul {
+
+ol,
+ul {
 	list-style: none;
 }
-blockquote, q {
+
+blockquote,
+q {
 	quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
 	content: '';
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 body {
 	background-color: #1A1A1A;
 	display: flex;
-    justify-content: center;
-    align-items: center;
+	justify-content: center;
+	align-items: center;
 }
 
 .linkFont {
@@ -170,12 +258,14 @@ span.linkFont {
 }
 
 
-a:link, a:visited {
+a:link,
+a:visited {
 	color: white;
 	text-decoration: none;
 }
 
-a:hover, a:active {
+a:hover,
+a:active {
 	cursor: pointer;
 	color: #666;
 }
@@ -281,7 +371,7 @@ p.logo {
 	border: 1px solid grey;
 	border-radius: 5px;
 	padding: 3px 10px 5px 10px;
-	margin: 10px 5px 10px 0;
+	margin: 5px 5px 10px 0;
 }
 
 .upload-modal button:hover {
@@ -303,21 +393,28 @@ p.logo {
 
 .upload-modal p {
 	margin: 5px 0 15px 0;
-    max-width: 574px;
 }
 
-#status-message-text,#status-message-file, #status-message-key {
-    font-family: 'Inconsolata', Helvetica, sans-serif;
+.upload-modal p,
+.upload-modal ol {
+	max-width: 550px;
+}
+
+#status-message-text,
+#status-message-file,
+#status-message-key {
+	font-family: 'Inconsolata', Helvetica, sans-serif;
 	font-style: italic;
 	margin-top: 10px;
 }
+
 #file-name {
 	font-family: 'Inconsolata', Helvetica, sans-serif;
-	font-style: italic;
 }
+
 #pasted-text {
-    width: 100%;
-    height: 120px;
+	width: 100%;
+	height: 120px;
 	display: block;
 }
 
@@ -329,25 +426,41 @@ p.logo {
 	display: block;
 }
 
-.step .next, .step .prev {
+.step .next,
+.step .prev {
 	position: absolute;
 	bottom: 10px;
 	right: 20px;
 }
+
 .step .prev {
-	right: 80px;	
+	right: 80px;
 }
 
 .project-name-display {
 	font-family: 'Inconsolata', sans-serif;
 	font-style: italic;
 	position: absolute;
-    top: 23px;
-    left: 255px;
+	top: 23px;
+	left: 255px;
 	color: #fff;
 }
 
 ol.instructions-list {
 	list-style: decimal;
 	margin-left: 15px;
+}
+
+.instructions-list li,
+table {
+	margin-bottom: 10px;
+}
+
+i {
+	font-style: italic;
+}
+
+h3,
+section {
+	margin-bottom: 10px;
 }

@@ -1,41 +1,43 @@
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-		<title>designhumandesign</title>
-		
-		<!-- I found this google font Lora that is fairly similar to Sentinel and a whole lot easier to include/embed :) 
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<title>designhumandesign</title>
+
+	<!-- I found this google font Lora that is fairly similar to Sentinel and a whole lot easier to include/embed :) 
 		https://fonts.google.com/specimen/Lora?category=Serif&selection.family=Lora
 		-->
-		<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 
-		<!-- nice one moving your CSS to a file! -->
-		<link rel="stylesheet" type="text/css" href="dhd_stylesheet.css">
+	<!-- nice one moving your CSS to a file! -->
+	<link rel="stylesheet" type="text/css" href="dhd_stylesheet.css">
 
-		<!-- CDN embed of JQuery so we don't have to keep track of it locally - https://code.jquery.com/ -->
-		<script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+	<!-- CDN embed of JQuery so we don't have to keep track of it locally - https://code.jquery.com/ -->
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+	 crossorigin="anonymous"></script>
 
-		<!-- found this library that lets you turn any webpage into an image - http://html2canvas.hertzen.com/ -->
-		<script type="text/javascript" src="scripts/html2canvas.min.js"></script>
+	<!-- found this library that lets you turn any webpage into an image - http://html2canvas.hertzen.com/ -->
+	<script type="text/javascript" src="scripts/html2canvas.min.js"></script>
 
-		<!-- moved your JS to its own lil home -->
-		<script type="text/javascript" src="scripts/datalist_general.js"></script>
-		<script type="text/javascript" src="scripts/main.js"></script>
+	<!-- moved your JS to its own lil home -->
+	<script type="text/javascript" src="scripts/datalist_general.js"></script>
+	<script type="text/javascript" src="scripts/main.js"></script>
 
-	</head>
+</head>
 
 
 <body>
-	
-	<a id="home-button" href="" onClick="window.location.reload()"><img border="0" alt="design(human)design" src="dhd_logo.png" width="225"></a>
+
+	<a id="home-button" href=""><img border="0" alt="design(human)design" src="dhd_logo.png" width="225"></a>
 	<span class="project-name-display"></span>
 	<p class="about"><a href="about.html">?</a></p>
 
 	<div class="madlib-container">
 
 		<div class="madlib-category">
-		<!-- made it so you're only dealing with a single function that figures things out with a parameter - in general, look for ways to not repeat yourself in webcode :) -->
+			<!-- made it so you're only dealing with a single function that figures things out with a parameter - in general, look for ways to not repeat yourself in webcode :) -->
 			<a href="javascript:randomize('artifacts')">Design </a>
 			<span class="artifacts"><input class="madlib-input" type="text" id="artifacts_input" onClick="this.select();"></span>
 		</div>
@@ -62,7 +64,7 @@
 
 		<a id="print-button"><img border="0" alt="Save" src="save_icon.png" width="65" height="65"></a>
 
-		<a id="upload-button"><img border="0" alt="Upload" src="upload_logo.png" width="60" height="60"></a>		
+		<a id="upload-button"><img border="0" alt="Upload" src="upload_logo.png" width="60" height="60"></a>
 
 	</div>
 
@@ -82,15 +84,15 @@
 			<ol class="instructions-list">
 				<li>Click <a target="_blank" href="http://sheets.new">here</a> to open a new Google spreadsheet.</li>
 				<li>Copy these 5 words into the first row:
-						<table style="width:100%">
-							<tr>
-								<th>artifacts</th>
-								<th>inspirations</th> 
-								<th>experiences</th>
-								<th>attributes</th>
-								<th>medium</th>
-							</tr>
-						</table>
+					<table style="width:100%">
+						<tr>
+							<th>artifacts</th>
+							<th>inspirations</th>
+							<th>experiences</th>
+							<th>attributes</th>
+							<th>medium</th>
+						</tr>
+					</table>
 				</li>
 				<li>Publish the spreadsheet to the web: Go to File menu and select “Publish to the web” and then click “Publish”</li>
 				<li>Get a sharable link to the spreadsheet: Click “Share” and then “get a sharable link”</li>
@@ -103,44 +105,56 @@
 			<button class="prev">Previous</button>
 			<button class="next">Next</button>
 			<h3>What concepts do you want to reframe?</h3>
-			<p>Paste your own text:</p>
-			<textarea id="pasted-text"></textarea>
-			<button id="upload-text-button">Load text</button>
-			<span id="status-message-text"></span>
-			<span id="text-result"></span>
-			
-			<p>Upload a PDF:</p>
-			<label for="upload-file" id="upload-file-label">
-					Upload a file
-			</label>
-			<input id="upload-file" type="file" style="display: none;">
-			<i id="file-name"></i>
-			<button id="upload-file-button">Load PDF</button>
-			<span id="status-message-file"></span>
-			<span id="file-result"></span>
+			<section>
+				<p><i>Paste your own text:</i></p>
+				<textarea id="pasted-text"></textarea>
+				<button id="upload-text-button">Upload text</button>
+				<span id="status-message-text"></span>
+				<span id="text-result"></span>
+			</section>
+			<section>
+				<p><i>Upload a PDF:</i></p>
+				<label for="upload-file" id="upload-file-label">
+					&#128193;Choose a file
+				</label>
+				<input id="upload-file" type="file" style="display: none;">
+				<i id="file-name"></i>
+				<button id="upload-file-button">Upload PDF</button>
+				<span id="status-message-file"></span>
+				<span id="file-result"></span>
+			</section>
+			<section>
+				<p><i>Upload a webpage:</i></p>
+				<input type="text" id="upload-webpage">
+				<button id="upload-webpage-button">Upload webpage</button>
+				<span id="status-message-webpage"></span>
+				<span id="webpage-result"></span>
+			</section>
 		</div>
 
 		<div class="step step4">
-			<p>Words added to spreadsheet.  Click 
+			<p>Words added to spreadsheet. Click
 				<a class="project-db-link" target="_blank" href="https://docs.google.com/spreadsheets/d/1-nKuL5c1Seye_DBPoY9qtme8ALSSE49OIlGPNmXGNAk">
 					here
-				</a> to view and/or edit it. Click 
-					<a class="project-email" target="_blank" href="maito:?subject=design(human)design%20website&%7BProject%20name%7D%20site%3A%20dhd%20url%20with%20spreadsheet%20key%20appended%0AView%20or%20edit%20the%20text%20database%20here%3A%20%7Bgoogle%20spreadsheet%20url%7D">
-						here
-					</a> to email link to 
-					<span class="project-name">
-						design(human)design
-					</span> site
-					</p>
+				</a> to view and/or edit it. Click
+				<a class="project-email" target="_blank" href="maito:?subject=design(human)design%20website&%7BProject%20name%7D%20site%3A%20dhd%20url%20with%20spreadsheet%20key%20appended%0AView%20or%20edit%20the%20text%20database%20here%3A%20%7Bgoogle%20spreadsheet%20url%7D">
+					here
+				</a> to email link to
+				<span class="project-name">
+					design(human)design
+				</span> site
+			</p>
 			<button id="close-modal">Ok</button>
 			<button class="prev">Previous</button>
 		</div>
 
 	</div>
 
-	<a id="logo" target="_blank" href="https://www.media.mit.edu/groups/object-based-media/overview/"><img src="MIT_ML_OBM_symbols.png" height="40"></a>
+	<a id="logo" target="_blank" href="https://www.media.mit.edu/groups/object-based-media/overview/"><img src="MIT_ML_OBM_symbols.png"
+		 height="40"></a>
 
 	<div>
 	</div>
 </body>
+
 </html>
