@@ -88,19 +88,22 @@ function saveToCookie() {
 }
 
 function saveToSheets(dataToSave) {
-	const shape = getSheetShape();
-	const updates = {};
-	for (let i = 0; i < categories.length; i++) {
-		const categoryName = categories[i];
-		updates[categoryName] = {
-			firstEmptyRow: shape[categoryName],
-			newEntries: dataToSave[categoryName]
-		}
 
-	}
-	ajax(sheetsServer + '/update', "POST", {
-		id: spreadsheetKey,
-		updates: updates
+	randomizeAll.then(() => {
+		const shape = getSheetShape();
+		const updates = {};
+		for (let i = 0; i < categories.length; i++) {
+			const categoryName = categories[i];
+			updates[categoryName] = {
+				firstEmptyRow: shape[categoryName],
+				newEntries: dataToSave[categoryName]
+			}
+
+		}
+		ajax(sheetsServer + '/update', "POST", {
+			id: spreadsheetKey,
+			updates: updates
+		});
 	});
 }
 
