@@ -35,17 +35,18 @@ function randomize(category) {
 
 function randomizeAll(spreadsheetJsonURL) {
 	document.querySelector(".madlib-container").classList.remove('fadeIn')
-	return $.getJSON(spreadsheetJsonURL, function (data) {
-		//console.log to see stuff in developer tools
-		console.log(data.feed.entry);
-		// spreadsheet data comes in as a big array, let's set a global array to that for easy access
-		madlib_data = data.feed.entry;
+	return ajax(spreadsheetJsonURL, 'GET')
+    .then(response => response.json())
+    .then(data => {
+      //console.log to see stuff in developer tools
+      console.log(data.feed.entry);
+      // spreadsheet data comes in as a big array, let's set a global array to that for easy access
+      madlib_data = data.feed.entry;
 
-		// the parameters passed in match the titles in your google spreadsheet - so we can easily pull out data in the randomize fn
-		categories.map(randomize);
-		document.querySelector(".madlib-container").classList.add('fadeIn')
-
-	});
+      // the parameters passed in match the titles in your google spreadsheet - so we can easily pull out data in the randomize fn
+      categories.map(randomize);
+      document.querySelector('.madlib-container').classList.add('fadeIn');
+    });
 }
 
 // pulls out spreadsheet key from url so link can be shared with others
@@ -88,21 +89,29 @@ function saveToCookie() {
 }
 
 function saveToSheets(dataToSave) {
-	const shape = getSheetShape();
-	const updates = {};
-	for (let i = 0; i < categories.length; i++) {
-		const categoryName = categories[i];
-		updates[categoryName] = {
-			firstEmptyRow: shape[categoryName],
-			newEntries: dataToSave[categoryName]
+
+	randomizeAll(datalist_general).then( response => {
+		console.log(response);
+
+		const shape = getSheetShape();
+		const updates = {};
+		for (let i = 0; i < categories.length; i++) {
+			const categoryName = categories[i];
+			updates[categoryName] = {
+				firstEmptyRow: shape[categoryName] + 2,
+				newEntries: dataToSave[categoryName]
+			}
+
 		}
 
-	}
-
-	ajax(sheetsServer + '/update', "POST", {
-		id: spreadsheetKey,
-		updates: updates
+		ajax(sheetsServer + '/update', "POST", {
+			id: spreadsheetKey,
+			updates: updates
+		});
 	});
+
+
+	
 	// randomizeAll.then(() => {
 
 
