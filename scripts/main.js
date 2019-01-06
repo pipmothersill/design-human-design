@@ -1,5 +1,7 @@
 // our global array of spreadsheet data JSON will get loaded in here...
 var madlib_data;
+var autoFunctionID;
+var autoOn = false;
 const categories = [
 	'artifacts',
 	'inspirations',
@@ -7,6 +9,7 @@ const categories = [
 	'attributes',
 	'medium',
 ];
+
 var sheetsServer, nltkServer;
 
 if (window.location.hostname === 'localhost') {
@@ -16,6 +19,7 @@ if (window.location.hostname === 'localhost') {
 	sheetsServer = 'http://designhumandesign.media.mit.edu:3000';
 	nltkServer = 'http://designhumandesign.media.mit.edu:8080';
 }
+
 const masterSheetKey = '1r1HWyQ7goAWwoHd7O1x-ph1i7DuJAGwoqsnnj2c_lvE';
 var spreadsheetKey = '1cZw75v499DH_tryJGFyTHB3k8-Vr4AG7aV1Oj_OgWj0';
 var projectName = '';
@@ -31,22 +35,28 @@ function randomize(category) {
 	// ie. $(".aclass") gets all elements with that class, $("#anid") gets the element with that id
 	// I changed the ids of the input elts you're updating to be more easily accessible here
 	$("#" + category + "_input").val(newValue);
+
+	console.log(category + " " + newValue + " " + random_i);
 }
 
 function randomizeAll(spreadsheetJsonURL) {
 	document.querySelector(".madlib-container").classList.remove('fadeIn')
 	return ajax(spreadsheetJsonURL, 'GET')
-    .then(response => response.json())
-    .then(data => {
-      //console.log to see stuff in developer tools
-      console.log(data.feed.entry);
-      // spreadsheet data comes in as a big array, let's set a global array to that for easy access
-      madlib_data = data.feed.entry;
+		.then(response => response.json())
+		.then(data => {
+			//console.log to see stuff in developer tools
+			if (!data.feed.hasOwnProperty('entry')) {
+				// alert('Spreadsheet is empty!');
+				return;
+			}
+			console.log(data.feed.entry);
+			// spreadsheet data comes in as a big array, let's set a global array to that for easy access
+			madlib_data = data.feed.entry;
 
-      // the parameters passed in match the titles in your google spreadsheet - so we can easily pull out data in the randomize fn
-      categories.map(randomize);
-      document.querySelector('.madlib-container').classList.add('fadeIn');
-    });
+			// the parameters passed in match the titles in your google spreadsheet - so we can easily pull out data in the randomize fn
+			categories.map(randomize);
+			document.querySelector('.madlib-container').classList.add('fadeIn');
+		});
 }
 
 // pulls out spreadsheet key from url so link can be shared with others
@@ -90,7 +100,7 @@ function saveToCookie() {
 
 function saveToSheets(dataToSave) {
 
-	randomizeAll(datalist_general).then( response => {
+	randomizeAll(datalist_general).then(response => {
 		console.log(response);
 
 		const shape = getSheetShape();
@@ -101,7 +111,6 @@ function saveToSheets(dataToSave) {
 				firstEmptyRow: shape[categoryName] + 2,
 				newEntries: dataToSave[categoryName]
 			}
-
 		}
 
 		ajax(sheetsServer + '/update', "POST", {
@@ -109,13 +118,6 @@ function saveToSheets(dataToSave) {
 			updates: updates
 		});
 	});
-
-
-	
-	// randomizeAll.then(() => {
-
-
-	// });
 }
 
 function setLinks() {
@@ -157,6 +159,7 @@ function getSheetShape() {
 		shape[category] = max_len;
 		return;
 	});
+	console.log(shape);
 	return shape;
 }
 
@@ -179,11 +182,16 @@ $(document).ready(function () {
 
 	$("#auto-button").click(event => {
 		event.preventDefault();
-		randomizeAll(datalist_general);
-		setInterval(function(){
+		autoOn = !autoOn;
+		if (autoOn) {
 			randomizeAll(datalist_general);
-		}, 8000);
-		
+			autoFunctionID = setInterval(function () {
+				randomizeAll(datalist_general);
+			}, 8000);
+		} else {
+			clearInterval(autoFunctionID);
+		}
+		$("#auto-button").toggleClass("fade");
 	})
 
 	$("#print-button").click(function () {
@@ -207,14 +215,20 @@ $(document).ready(function () {
 		document.querySelector('.step.step1').style.display = 'block';
 	});
 
-	$(".step .next").click(function (event) {
-		$(this).parent(".step").hide();
-		$(this).parent(".step").next().show();
-	});
+	bindStepHandlers();
 
-	$(".step .prev").click(function (event) {
-		$(this).parent(".step").hide();
-		$(this).parent(".step").prev().show();
+	$('.theme-page-button').click(function (event) {
+		$('.step3').after(hiddenStep);
+		$('.step3 .next').click();
+		checkboxlimit(document.forms.starter.themes, 2);
+		$('.theme-page-button').remove();
+		$('#upload-inspiration').click(function (event) {
+			$('.theme-checkbox:checked').map(function () {
+				const themeName = $(this).closest('label').text();
+				loadTheme(themeName);
+			});
+		});
+		bindStepHandlers();
 	});
 
 	$("#key-upload").click(function (event) {
@@ -274,9 +288,7 @@ $(document).ready(function () {
 
 		data.append('file', document.querySelector('#upload-file').files[0]);
 
-		ajax(nltkServer + '/upload', "POST", data, false)
-			.then(response => response.json())
-			.then(response => {
+		getPDFKeywords(data).then(response => {
 				document.querySelector('#status-message-file').innerText = `File parsed and loaded!`
 				// document.querySelector('#file-result').innerHTML = JSON.stringify(response);
 				console.log(response);
@@ -291,11 +303,7 @@ $(document).ready(function () {
 		document.querySelector('#status-message-text').innerText = 'Loading...';
 		const textInput = encodeURIComponent(document.querySelector('#pasted-text').value);
 
-		ajax(nltkServer + "/text", "POST", {
-				text: textInput
-			})
-			.then(response => response.json())
-			.then(response => {
+		getTextKeywords(textInput).then(response => {
 				document.querySelector('#status-message-text').innerText = 'Text parsed and loaded!';
 				// document.querySelector('#text-result').innerHTML = JSON.stringify(response);
 				console.log(response);
@@ -310,9 +318,7 @@ $(document).ready(function () {
 		document.querySelector('#status-message-webpage').innerText = 'Loading...';
 		const url = encodeURIComponent(document.querySelector('#upload-webpage').value);
 
-		ajax(nltkServer + "/webpage?url=" + encodeURIComponent(url), "GET")
-			.then(response => response.json())
-			.then(response => {
+		getWebpageKeywords(url).then(response => {
 				document.querySelector('#status-message-webpage').innerText = 'Webpage parsed and loaded!';
 				// document.querySelector('#webpage-result').innerHTML = JSON.stringify(response);
 				console.log(response);
@@ -324,6 +330,22 @@ $(document).ready(function () {
 	});
 });
 
+function getWebpageKeywords(url) {
+	return ajax(nltkServer + "/webpage?url=" + encodeURIComponent(url), "GET")
+		.then(response => response.json());
+}
+
+function getTextKeywords(text) {
+	return ajax(nltkServer + "/text", "POST", {
+			text: textInput
+		})
+		.then(response => response.json());
+}
+
+function getPDFKeywords(data) {
+	return ajax(nltkServer + '/upload', "POST", data, false)
+		.then(response => response.json());
+}
 
 function setCookie(key, value) {
 	document.cookie = encodeURIComponent(String(key)) + "=" + encodeURIComponent(String(value)) + ";path=/";
@@ -366,3 +388,184 @@ function ajax(url, method, data = {}, isJSON = true) {
 
 	return fetch(url, params);
 }
+
+function bindStepHandlers() {
+	$(".step .next").click(function (event) {
+		$(this).parent(".step").hide();
+		$(this).parent(".step").next().show();
+	});
+
+	$(".step .prev").click(function (event) {
+		$(this).parent(".step").hide();
+		$(this).parent(".step").prev().show();
+	});
+}
+
+
+const hiddenStep = `<div class="step step35">
+			<button class="prev">Previous</button>
+			<button class="next">Next</button>
+			<h3>What concepts do you want to reframe?</h3>
+			<section>
+				<p>Here are some inspiration starters to get you going (select up to two):
+				</p>
+				<form id="starter" name="starter">
+					<label><input type="checkbox" name="themes" class="theme-checkbox"/>Health</label><br />
+					<label><input type="checkbox" name="themes" class="theme-checkbox"/>Environment</label><br />
+					<label><input type="checkbox" name="themes" class="theme-checkbox"/>Work</label><br />
+					<label><input type="checkbox" name="themes" class="theme-checkbox"/>Creativity</label><br />
+					<label><input type="checkbox" name="themes" class="theme-checkbox"/>Knowledge</label><br />
+					<label><input type="checkbox" name="themes" class="theme-checkbox"/>Technology</label><br />
+				</form>
+				<button id="upload-inspiration">Upload inspiration starters</button>
+			</section>
+		</div>`;
+
+// from http://www.javascriptkit.com/script/script2/checkboxlimit.shtml
+function checkboxlimit(checkgroup, limit) {
+	for (let i = 0; i < checkgroup.length; i++) {
+		checkgroup[i].onclick = function () {
+			let checkedcount = 0;
+			for (let i = 0; i < checkgroup.length; i++)
+				checkedcount += (checkgroup[i].checked) ? 1 : 0;
+			if (checkedcount > limit) {
+				console.log("You can only select a maximum of " + limit + " checkboxes");
+				this.checked = false;
+			}
+		}
+	}
+}
+
+loadTheme = (theme) => {
+	ajax("./scripts/cached_results.json", "GET")
+		.then(response => response.json())
+		.then(response => {
+			let themeData = response[theme];
+			saveToSheets(themeData);
+		});
+}
+
+// const starter = {
+// 	common: {
+// 		artifacts: [
+// 			'an object',
+// 			'an interaction',
+// 			'a website',
+// 			'a service',
+// 			'an image',
+// 			'an app',
+// 			'an experience',
+// 			'an installation',
+// 			'a technology',
+// 			'a brand',
+// 			'a concept',
+// 			'a book',
+// 			'a bottle',
+// 			'a building',
+// 			'a vehicle'
+// 		],
+// 		inspirations: [
+
+// 		],
+// 		experiences: [],
+// 		attributes: [
+// 			"forms",
+// 			"brand touchpoints",
+// 			"wireframes",
+// 			"virtual reality",
+// 			"augmented reality",
+// 			"digital technology",
+// 			"analog technology",
+// 			"concept sketches",
+// 			"personas",
+// 			"design research",
+// 			"journey mapping"
+// 		],
+// 		medium: [
+// 			'virtual reality',
+// 			'augmented reality',
+// 			'Blockchain',
+// 			'Internet of Things',
+// 			'artificial intelligence',
+// 			'pen & paper',
+// 			'paint',
+// 			'collage',
+// 			'video',
+// 			'code',
+// 			'existing objects',
+// 			'biomaterials information',
+// 			'digital technology',
+// 			'analog technology',
+// 			'audio'
+// 		]
+// 	},
+// 	Health: [
+// 		'https://en.wikipedia.org/wiki/Health_care',
+// 		'https://en.wikipedia.org/wiki/Medicine',
+// 		'https://en.wikipedia.org/wiki/Psychology'
+// 	],
+// 	Environment: [
+// 		'https://en.wikipedia.org/wiki/Built_environment',
+// 		'https://en.wikipedia.org/wiki/Social_environment',
+// 		'https://en.wikipedia.org/wiki/Ecology'
+// 	],
+// 	Work: [
+// 		'https://en.wikipedia.org/wiki/Employment',
+// 		'https://en.wikipedia.org/wiki/Office',
+// 		'https://en.wikipedia.org/wiki/Workplace',
+// 		'https://en.wikipedia.org/wiki/Collaboration'
+// 	],
+// 	Creativity: [
+// 		'https://en.wikipedia.org/wiki/Creativity',
+// 		'https://en.wikipedia.org/wiki/Technology',
+// 		'https://en.wikipedia.org/wiki/Art',
+// 		'https://en.wikipedia.org/wiki/Design'
+// 	],
+// 	Knowledge: [
+// 		'https://en.wikipedia.org/wiki/Epistemology',
+// 		'https://en.wikipedia.org/wiki/Learning',
+// 		'https://en.wikipedia.org/wiki/Intelligence',
+// 		'https://en.wikipedia.org/wiki/Wisdom'
+// 	],
+// 	Technology: [
+// 		'https://en.wikipedia.org/wiki/Technology',
+// 		'https://en.wikipedia.org/wiki/Machine',
+// 		'https://en.wikipedia.org/wiki/Computer',
+// 		'https://en.wikipedia.org/wiki/Science'
+// 	]
+// };
+
+// addToCache = async (url, cache) => {
+// 	console.log("getting " + url);
+// 	return getWebpageKeywords(url).then(response => {
+// 		console.log(response);
+// 		cache.artifacts = cache.artifacts.concat(response.artifacts);
+// 		cache.inspirations = cache.inspirations.concat(response.inspirations);
+// 		cache.experiences = cache.experiences.concat(response.experiences);
+// 		cache.attributes = cache.attributes.concat(response.attributes);
+// 		cache.medium = cache.medium.concat(response.medium);
+// 	});
+// }
+
+// starterCache = {
+// 	"Health": starter.common,
+// 	"Environment": starter.common,
+// 	"Work": starter.common,
+// 	"Creativity": starter.common,
+// 	"Knowledge": starter.common,
+// 	"Technology": starter.common
+// }
+
+
+// generateCache = async () => {
+// 	for (let i = 0; i < Object.keys(starterCache).length; i++) {
+// 		let theme = Object.keys(starterCache)[i];
+// 		for (let j = 0; j < starter[theme].length; j++) {
+// 			let url = starter[theme][j];
+// 			await addToCache(url, starterCache[theme]);
+// 		}
+// 	}
+// }
+
+
+// generateCache();

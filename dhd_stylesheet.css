@@ -288,6 +288,10 @@ a:active {
 	right: 85;
 }
 
+#auto-button.fade {
+	opacity: .3;
+}
+
 #print-button {
 	right: 150;
 }
