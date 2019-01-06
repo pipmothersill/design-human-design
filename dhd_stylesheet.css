@@ -271,7 +271,8 @@ a:active {
 }
 
 #print-button,
-#upload-button {
+#upload-button,
+#auto-button {
 	position: absolute;
 	bottom: 15;
 	right: 15;
@@ -283,12 +284,17 @@ a:active {
 	margin-left: 10px;
 }
 
-#upload-button {
+#auto-button {
 	right: 85;
 }
 
+#print-button {
+	right: 150;
+}
+
 #print-button:hover,
-#upload-button:hover {
+#upload-button:hover,
+#auto-button:hover {
 	opacity: 0.5;
 }
 

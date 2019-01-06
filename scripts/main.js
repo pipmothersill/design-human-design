@@ -177,6 +177,15 @@ $(document).ready(function () {
 		randomizeAll(datalist_general);
 	})
 
+	$("#auto-button").click(event => {
+		event.preventDefault();
+		randomizeAll(datalist_general);
+		setInterval(function(){
+			randomizeAll(datalist_general);
+		}, 8000);
+		
+	})
+
 	$("#print-button").click(function () {
 		html2canvas(document.body, {
 			onrendered: function (canvas) {
