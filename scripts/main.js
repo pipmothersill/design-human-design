@@ -23,20 +23,41 @@ if (window.location.hostname === 'localhost') {
 const masterSheetKey = '1r1HWyQ7goAWwoHd7O1x-ph1i7DuJAGwoqsnnj2c_lvE';
 var spreadsheetKey = '1cZw75v499DH_tryJGFyTHB3k8-Vr4AG7aV1Oj_OgWj0';
 var projectName = '';
+var sheetShape = {
+	"artifacts": 0,
+	"inspirations": 0,
+	"experiences": 0,
+	"attributes": 0,
+	"medium": 0
+};
+
+var cachedValues = {
+	"artifacts": [],
+	"inspirations": [],
+	"experiences": [],
+	"attributes": [],
+	"medium": []
+}
 
 
 function randomize(category) {
-	const sheetShape = getSheetShape();
-	//choose a random entry of our madlib_data of the correct category
-	const random_i = Math.floor(Math.random() * sheetShape[category]);
-	const newValue = madlib_data[random_i]['gsx$' + category]['$t'];
-
-	// use JQuery for more readable versions of document.getElementById...
-	// ie. $(".aclass") gets all elements with that class, $("#anid") gets the element with that id
-	// I changed the ids of the input elts you're updating to be more easily accessible here
+	// TODO: make sure no redundant words
+	const len = cachedValues[category].length;
+	let newValue;
+	if (len === 0) {
+		newValue = '';
+		console.error('empty list of ' + category);
+	} else {
+		//choose a random entry of our madlib_data of the correct category
+		const random_i = Math.floor(Math.random() * len);
+		// const newValue = madlib_data[random_i]['gsx$' + category]['$t'];
+		newValue = cachedValues[category][random_i];
+		// use JQuery for more readable versions of document.getElementById...
+		// ie. $(".aclass") gets all elements with that class, $("#anid") gets the element with that id
+		// I changed the ids of the input elts you're updating to be more easily accessible here
+	}
+	
 	$("#" + category + "_input").val(newValue);
-
-	console.log(category + " " + newValue + " " + random_i);
 }
 
 function randomizeAll(spreadsheetJsonURL) {
@@ -44,18 +65,18 @@ function randomizeAll(spreadsheetJsonURL) {
 	return ajax(spreadsheetJsonURL, 'GET')
 		.then(response => response.json())
 		.then(data => {
-			//console.log to see stuff in developer tools
 			if (!data.feed.hasOwnProperty('entry')) {
-				// alert('Spreadsheet is empty!');
+				console.error('Spreadsheet is empty!');
 				return;
 			}
 			console.log(data.feed.entry);
 			// spreadsheet data comes in as a big array, let's set a global array to that for easy access
 			madlib_data = data.feed.entry;
-
+			getCachedValues();
 			// the parameters passed in match the titles in your google spreadsheet - so we can easily pull out data in the randomize fn
 			categories.map(randomize);
 			document.querySelector('.madlib-container').classList.add('fadeIn');
+			return madlib_data;
 		});
 }
 
@@ -101,14 +122,11 @@ function saveToCookie() {
 function saveToSheets(dataToSave) {
 
 	randomizeAll(datalist_general).then(response => {
-		console.log(response);
-
-		const shape = getSheetShape();
-		const updates = {};
+			const updates = {};
 		for (let i = 0; i < categories.length; i++) {
 			const categoryName = categories[i];
 			updates[categoryName] = {
-				firstEmptyRow: shape[categoryName] + 2,
+				firstEmptyRow: sheetShape[categoryName] + 2,
 				newEntries: dataToSave[categoryName]
 			}
 		}
@@ -149,18 +167,38 @@ function getSheetShape() {
 	let shape = {};
 	const max_len = madlib_data.length;
 	categories.map(category => {
-		for (let i = 0; i < max_len; i++) {
+		for (let i = max_len - 1; i >= 0; i--) {
 			const element = madlib_data[i]['gsx$' + category]['$t'];
-			if (element === "") {
-				shape[category] = i;
+			if (element !== "") {
+				shape[category] = i + 1;
 				return;
 			}
 		}
 		shape[category] = max_len;
 		return;
 	});
-	console.log(shape);
+	sheetShape = shape;
 	return shape;
+}
+
+function getCachedValues() {
+	const max_len = madlib_data.length;
+	categories.map(category => {
+		let foundLastItem = false;
+		cachedValues[category] = [];
+		sheetShape[category] = 0;
+		for (let i = max_len - 1; i >= 0; i--) {
+			const element = madlib_data[i]['gsx$' + category]['$t'];
+			if (element !== "") {
+				cachedValues[category].push(element);
+				if (!foundLastItem) {
+					sheetShape[category] = i + 1;
+					foundLastItem = true;
+				}
+			}
+		}
+		if (!foundLastItem) sheetShape[category] = max_len;
+	});
 }
 
 
@@ -231,31 +269,7 @@ $(document).ready(function () {
 		bindStepHandlers();
 	});
 
-	$("#key-upload").click(function (event) {
-		document.querySelector('#status-message-key').innerText = 'Loading...';
-		event.preventDefault();
-		let inputedKey = $("#spreadsheet-key").val();
-		inputedKey = inputedKey.split('/').filter(URLPart => URLPart.length === 44)[0];
-		let oldKey = spreadsheetKey;
-		if (inputedKey.length !== 44) {
-			document.querySelector('#status-message-key').innerText = 'Error : Invalid key';
-			return;
-		} else {
-			spreadsheetKey = inputedKey;
-			convertURL();
-			randomizeAll(datalist_general).then(response => {
-				document.querySelector('#status-message-key').innerText = 'Success: spreadsheet loaded';
-				saveToURL();
-				saveToMasterSpreadsheet(spreadsheetKey);
-				setLinks();
-				saveToCookie();
-			}).catch(error => {
-				document.querySelector('#status-message-key').innerText = 'Error : Invalid key';
-				spreadsheetKey = oldKey;
-				convertURL();
-			});
-		}
-	});
+	$("#key-upload").click(uploadKeyHandler);
 
 	$("#close-modal").click(function (event) {
 		event.preventDefault();
@@ -266,7 +280,7 @@ $(document).ready(function () {
 
 
 	// When a new file is selected
-	document.querySelector('#upload-file').addEventListener('change', function () {
+	document.querySelector('#upload-file').addEventListener('change', function (event) {
 		var file = this.files[0],
 			pdf_mime_type = 'application/pdf';
 
@@ -282,7 +296,7 @@ $(document).ready(function () {
 
 
 	// Upload via AJAX
-	document.querySelector('#upload-file-button').addEventListener('click', function () {
+	document.querySelector('#upload-file-button').addEventListener('click', function (event) {
 		document.querySelector('#status-message-file').innerText = 'Loading...';
 		var data = new FormData();
 
@@ -299,7 +313,7 @@ $(document).ready(function () {
 			})
 	});
 
-	document.querySelector('#upload-text-button').addEventListener('click', function () {
+	document.querySelector('#upload-text-button').addEventListener('click', function (event) {
 		document.querySelector('#status-message-text').innerText = 'Loading...';
 		const textInput = encodeURIComponent(document.querySelector('#pasted-text').value);
 
@@ -314,7 +328,7 @@ $(document).ready(function () {
 			})
 	});
 
-	document.querySelector('#upload-webpage-button').addEventListener('click', function () {
+	document.querySelector('#upload-webpage-button').addEventListener('click', function (event) {
 		document.querySelector('#status-message-webpage').innerText = 'Loading...';
 		const url = encodeURIComponent(document.querySelector('#upload-webpage').value);
 
@@ -329,6 +343,32 @@ $(document).ready(function () {
 			})
 	});
 });
+
+function uploadKeyHandler(event) {
+	document.querySelector('#status-message-key').innerText = 'Loading...';
+	event.preventDefault();
+	let inputedKey = $("#spreadsheet-key").val();
+	inputedKey = inputedKey.split('/').filter(URLPart => URLPart.length === 44)[0];
+	let oldKey = spreadsheetKey;
+	if (inputedKey.length !== 44) {
+		document.querySelector('#status-message-key').innerText = 'Error : Invalid key';
+		return;
+	} else {
+		spreadsheetKey = inputedKey;
+		convertURL();
+		randomizeAll(datalist_general).then(response => {
+			document.querySelector('#status-message-key').innerText = 'Success: spreadsheet loaded';
+			saveToURL();
+			saveToMasterSpreadsheet(spreadsheetKey);
+			setLinks();
+			saveToCookie();
+		}).catch(error => {
+			document.querySelector('#status-message-key').innerText = 'Error : Invalid key';
+			spreadsheetKey = oldKey;
+			convertURL();
+		});
+	}
+}
 
 function getWebpageKeywords(url) {
 	return ajax(nltkServer + "/webpage?url=" + encodeURIComponent(url), "GET")
@@ -445,127 +485,142 @@ loadTheme = (theme) => {
 		});
 }
 
-// const starter = {
-// 	common: {
-// 		artifacts: [
-// 			'an object',
-// 			'an interaction',
-// 			'a website',
-// 			'a service',
-// 			'an image',
-// 			'an app',
-// 			'an experience',
-// 			'an installation',
-// 			'a technology',
-// 			'a brand',
-// 			'a concept',
-// 			'a book',
-// 			'a bottle',
-// 			'a building',
-// 			'a vehicle'
-// 		],
-// 		inspirations: [
+const starter = {
+	common: {
+		artifacts: [
+			'an object',
+			'an interaction',
+			'a website',
+			'a service',
+			'an image',
+			'an app',
+			'an experience',
+			'an installation',
+			'a technology',
+			'a brand',
+			'a concept',
+			'a book',
+			'a bottle',
+			'a building',
+			'a vehicle'
+		],
+		inspirations: [
 
-// 		],
-// 		experiences: [],
-// 		attributes: [
-// 			"forms",
-// 			"brand touchpoints",
-// 			"wireframes",
-// 			"virtual reality",
-// 			"augmented reality",
-// 			"digital technology",
-// 			"analog technology",
-// 			"concept sketches",
-// 			"personas",
-// 			"design research",
-// 			"journey mapping"
-// 		],
-// 		medium: [
-// 			'virtual reality',
-// 			'augmented reality',
-// 			'Blockchain',
-// 			'Internet of Things',
-// 			'artificial intelligence',
-// 			'pen & paper',
-// 			'paint',
-// 			'collage',
-// 			'video',
-// 			'code',
-// 			'existing objects',
-// 			'biomaterials information',
-// 			'digital technology',
-// 			'analog technology',
-// 			'audio'
-// 		]
-// 	},
-// 	Health: [
-// 		'https://en.wikipedia.org/wiki/Health_care',
-// 		'https://en.wikipedia.org/wiki/Medicine',
-// 		'https://en.wikipedia.org/wiki/Psychology'
-// 	],
-// 	Environment: [
-// 		'https://en.wikipedia.org/wiki/Built_environment',
-// 		'https://en.wikipedia.org/wiki/Social_environment',
-// 		'https://en.wikipedia.org/wiki/Ecology'
-// 	],
-// 	Work: [
-// 		'https://en.wikipedia.org/wiki/Employment',
-// 		'https://en.wikipedia.org/wiki/Office',
-// 		'https://en.wikipedia.org/wiki/Workplace',
-// 		'https://en.wikipedia.org/wiki/Collaboration'
-// 	],
-// 	Creativity: [
-// 		'https://en.wikipedia.org/wiki/Creativity',
-// 		'https://en.wikipedia.org/wiki/Technology',
-// 		'https://en.wikipedia.org/wiki/Art',
-// 		'https://en.wikipedia.org/wiki/Design'
-// 	],
-// 	Knowledge: [
-// 		'https://en.wikipedia.org/wiki/Epistemology',
-// 		'https://en.wikipedia.org/wiki/Learning',
-// 		'https://en.wikipedia.org/wiki/Intelligence',
-// 		'https://en.wikipedia.org/wiki/Wisdom'
-// 	],
-// 	Technology: [
-// 		'https://en.wikipedia.org/wiki/Technology',
-// 		'https://en.wikipedia.org/wiki/Machine',
-// 		'https://en.wikipedia.org/wiki/Computer',
-// 		'https://en.wikipedia.org/wiki/Science'
-// 	]
-// };
+		],
+		experiences: [],
+		attributes: [
+			"forms",
+			"brand touchpoints",
+			"wireframes",
+			"virtual reality",
+			"augmented reality",
+			"digital technology",
+			"analog technology",
+			"concept sketches",
+			"personas",
+			"design research",
+			"journey mapping"
+		],
+		medium: [
+			'virtual reality',
+			'augmented reality',
+			'Blockchain',
+			'Internet of Things',
+			'artificial intelligence',
+			'pen & paper',
+			'paint',
+			'collage',
+			'video',
+			'code',
+			'existing objects',
+			'biomaterials information',
+			'digital technology',
+			'analog technology',
+			'audio'
+		]
+	},
+	Health: [
+		'https://en.wikipedia.org/wiki/Health_care',
+		'https://en.wikipedia.org/wiki/Medicine',
+		'https://en.wikipedia.org/wiki/Psychology'
+	],
+	Environment: [
+		'https://en.wikipedia.org/wiki/Built_environment',
+		'https://en.wikipedia.org/wiki/Social_environment',
+		'https://en.wikipedia.org/wiki/Ecology'
+	],
+	Work: [
+		'https://en.wikipedia.org/wiki/Employment',
+		'https://en.wikipedia.org/wiki/Office',
+		'https://en.wikipedia.org/wiki/Workplace',
+		'https://en.wikipedia.org/wiki/Collaboration'
+	],
+	Creativity: [
+		'https://en.wikipedia.org/wiki/Creativity',
+		'https://en.wikipedia.org/wiki/Technology',
+		'https://en.wikipedia.org/wiki/Art',
+		'https://en.wikipedia.org/wiki/Design'
+	],
+	Knowledge: [
+		'https://en.wikipedia.org/wiki/Epistemology',
+		'https://en.wikipedia.org/wiki/Learning',
+		'https://en.wikipedia.org/wiki/Intelligence',
+		'https://en.wikipedia.org/wiki/Wisdom'
+	],
+	Technology: [
+		'https://en.wikipedia.org/wiki/Technology',
+		'https://en.wikipedia.org/wiki/Machine',
+		'https://en.wikipedia.org/wiki/Computer',
+		'https://en.wikipedia.org/wiki/Science'
+	]
+};
 
-// addToCache = async (url, cache) => {
-// 	console.log("getting " + url);
-// 	return getWebpageKeywords(url).then(response => {
-// 		console.log(response);
-// 		cache.artifacts = cache.artifacts.concat(response.artifacts);
-// 		cache.inspirations = cache.inspirations.concat(response.inspirations);
-// 		cache.experiences = cache.experiences.concat(response.experiences);
-// 		cache.attributes = cache.attributes.concat(response.attributes);
-// 		cache.medium = cache.medium.concat(response.medium);
-// 	});
-// }
+addToCache = async (url, cache) => {
+	console.log("getting " + url);
+	return getWebpageKeywords(url).then(response => {
+		console.log(response);
+		cache.artifacts = cache.artifacts.concat(response.artifacts);
+		cache.inspirations = cache.inspirations.concat(response.inspirations);
+		cache.experiences = cache.experiences.concat(response.experiences);
+		cache.attributes = cache.attributes.concat(response.attributes);
+		cache.medium = cache.medium.concat(response.medium);
+	});
+}
 
-// starterCache = {
-// 	"Health": starter.common,
-// 	"Environment": starter.common,
-// 	"Work": starter.common,
-// 	"Creativity": starter.common,
-// 	"Knowledge": starter.common,
-// 	"Technology": starter.common
-// }
-
-
-// generateCache = async () => {
-// 	for (let i = 0; i < Object.keys(starterCache).length; i++) {
-// 		let theme = Object.keys(starterCache)[i];
-// 		for (let j = 0; j < starter[theme].length; j++) {
-// 			let url = starter[theme][j];
-// 			await addToCache(url, starterCache[theme]);
-// 		}
-// 	}
-// }
+starterCache = {
+	"Health": {...starter.common},
+	"Environment": {...starter.common},
+	"Work": {...starter.common},
+	"Creativity": {...starter.common},
+	"Knowledge": {...starter.common},
+	"Technology": {...starter.common}
+}
 
 
-// generateCache();
+generateCache = async () => {
+	for (let i = 0; i < Object.keys(starterCache).length; i++) {
+		let theme = Object.keys(starterCache)[i];
+		for (let j = 0; j < starter[theme].length; j++) {
+			let url = starter[theme][j];
+			await addToCache(url, starterCache[theme]);
+		}
+	}
+}
+
+
+
+function download(content, fileName, contentType) {
+	var a = document.createElement("a");
+	var file = new Blob([content], { type: contentType });
+	a.href = URL.createObjectURL(file);
+	a.download = fileName;
+	a.click();
+}
+
+
+async function hello() {
+	await generateCache();
+	download(JSON.stringify(starterCache), 'json.txt', 'text/plain');
+}
+
+hello();
