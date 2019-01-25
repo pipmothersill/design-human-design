@@ -485,142 +485,142 @@ loadTheme = (theme) => {
 		});
 }
 
-const starter = {
-	common: {
-		artifacts: [
-			'an object',
-			'an interaction',
-			'a website',
-			'a service',
-			'an image',
-			'an app',
-			'an experience',
-			'an installation',
-			'a technology',
-			'a brand',
-			'a concept',
-			'a book',
-			'a bottle',
-			'a building',
-			'a vehicle'
-		],
-		inspirations: [
+// const starter = {
+// 	common: {
+// 		artifacts: [
+// 			'an object',
+// 			'an interaction',
+// 			'a website',
+// 			'a service',
+// 			'an image',
+// 			'an app',
+// 			'an experience',
+// 			'an installation',
+// 			'a technology',
+// 			'a brand',
+// 			'a concept',
+// 			'a book',
+// 			'a bottle',
+// 			'a building',
+// 			'a vehicle'
+// 		],
+// 		inspirations: [
 
-		],
-		experiences: [],
-		attributes: [
-			"forms",
-			"brand touchpoints",
-			"wireframes",
-			"virtual reality",
-			"augmented reality",
-			"digital technology",
-			"analog technology",
-			"concept sketches",
-			"personas",
-			"design research",
-			"journey mapping"
-		],
-		medium: [
-			'virtual reality',
-			'augmented reality',
-			'Blockchain',
-			'Internet of Things',
-			'artificial intelligence',
-			'pen & paper',
-			'paint',
-			'collage',
-			'video',
-			'code',
-			'existing objects',
-			'biomaterials information',
-			'digital technology',
-			'analog technology',
-			'audio'
-		]
-	},
-	Health: [
-		'https://en.wikipedia.org/wiki/Health_care',
-		'https://en.wikipedia.org/wiki/Medicine',
-		'https://en.wikipedia.org/wiki/Psychology'
-	],
-	Environment: [
-		'https://en.wikipedia.org/wiki/Built_environment',
-		'https://en.wikipedia.org/wiki/Social_environment',
-		'https://en.wikipedia.org/wiki/Ecology'
-	],
-	Work: [
-		'https://en.wikipedia.org/wiki/Employment',
-		'https://en.wikipedia.org/wiki/Office',
-		'https://en.wikipedia.org/wiki/Workplace',
-		'https://en.wikipedia.org/wiki/Collaboration'
-	],
-	Creativity: [
-		'https://en.wikipedia.org/wiki/Creativity',
-		'https://en.wikipedia.org/wiki/Technology',
-		'https://en.wikipedia.org/wiki/Art',
-		'https://en.wikipedia.org/wiki/Design'
-	],
-	Knowledge: [
-		'https://en.wikipedia.org/wiki/Epistemology',
-		'https://en.wikipedia.org/wiki/Learning',
-		'https://en.wikipedia.org/wiki/Intelligence',
-		'https://en.wikipedia.org/wiki/Wisdom'
-	],
-	Technology: [
-		'https://en.wikipedia.org/wiki/Technology',
-		'https://en.wikipedia.org/wiki/Machine',
-		'https://en.wikipedia.org/wiki/Computer',
-		'https://en.wikipedia.org/wiki/Science'
-	]
-};
+// 		],
+// 		experiences: [],
+// 		attributes: [
+// 			"forms",
+// 			"brand touchpoints",
+// 			"wireframes",
+// 			"virtual reality",
+// 			"augmented reality",
+// 			"digital technology",
+// 			"analog technology",
+// 			"concept sketches",
+// 			"personas",
+// 			"design research",
+// 			"journey mapping"
+// 		],
+// 		medium: [
+// 			'virtual reality',
+// 			'augmented reality',
+// 			'Blockchain',
+// 			'Internet of Things',
+// 			'artificial intelligence',
+// 			'pen & paper',
+// 			'paint',
+// 			'collage',
+// 			'video',
+// 			'code',
+// 			'existing objects',
+// 			'biomaterials information',
+// 			'digital technology',
+// 			'analog technology',
+// 			'audio'
+// 		]
+// 	},
+// 	Health: [
+// 		'https://en.wikipedia.org/wiki/Health_care',
+// 		'https://en.wikipedia.org/wiki/Medicine',
+// 		'https://en.wikipedia.org/wiki/Psychology'
+// 	],
+// 	Environment: [
+// 		'https://en.wikipedia.org/wiki/Built_environment',
+// 		'https://en.wikipedia.org/wiki/Social_environment',
+// 		'https://en.wikipedia.org/wiki/Ecology'
+// 	],
+// 	Work: [
+// 		'https://en.wikipedia.org/wiki/Employment',
+// 		'https://en.wikipedia.org/wiki/Office',
+// 		'https://en.wikipedia.org/wiki/Workplace',
+// 		'https://en.wikipedia.org/wiki/Collaboration'
+// 	],
+// 	Creativity: [
+// 		'https://en.wikipedia.org/wiki/Creativity',
+// 		'https://en.wikipedia.org/wiki/Technology',
+// 		'https://en.wikipedia.org/wiki/Art',
+// 		'https://en.wikipedia.org/wiki/Design'
+// 	],
+// 	Knowledge: [
+// 		'https://en.wikipedia.org/wiki/Epistemology',
+// 		'https://en.wikipedia.org/wiki/Learning',
+// 		'https://en.wikipedia.org/wiki/Intelligence',
+// 		'https://en.wikipedia.org/wiki/Wisdom'
+// 	],
+// 	Technology: [
+// 		'https://en.wikipedia.org/wiki/Technology',
+// 		'https://en.wikipedia.org/wiki/Machine',
+// 		'https://en.wikipedia.org/wiki/Computer',
+// 		'https://en.wikipedia.org/wiki/Science'
+// 	]
+// };
 
-addToCache = async (url, cache) => {
-	console.log("getting " + url);
-	return getWebpageKeywords(url).then(response => {
-		console.log(response);
-		cache.artifacts = cache.artifacts.concat(response.artifacts);
-		cache.inspirations = cache.inspirations.concat(response.inspirations);
-		cache.experiences = cache.experiences.concat(response.experiences);
-		cache.attributes = cache.attributes.concat(response.attributes);
-		cache.medium = cache.medium.concat(response.medium);
-	});
-}
+// addToCache = async (url, cache) => {
+// 	console.log("getting " + url);
+// 	return getWebpageKeywords(url).then(response => {
+// 		console.log(response);
+// 		cache.artifacts = cache.artifacts.concat(response.artifacts);
+// 		cache.inspirations = cache.inspirations.concat(response.inspirations);
+// 		cache.experiences = cache.experiences.concat(response.experiences);
+// 		cache.attributes = cache.attributes.concat(response.attributes);
+// 		cache.medium = cache.medium.concat(response.medium);
+// 	});
+// }
 
-starterCache = {
-	"Health": {...starter.common},
-	"Environment": {...starter.common},
-	"Work": {...starter.common},
-	"Creativity": {...starter.common},
-	"Knowledge": {...starter.common},
-	"Technology": {...starter.common}
-}
-
-
-generateCache = async () => {
-	for (let i = 0; i < Object.keys(starterCache).length; i++) {
-		let theme = Object.keys(starterCache)[i];
-		for (let j = 0; j < starter[theme].length; j++) {
-			let url = starter[theme][j];
-			await addToCache(url, starterCache[theme]);
-		}
-	}
-}
+// starterCache = {
+// 	"Health": {...starter.common},
+// 	"Environment": {...starter.common},
+// 	"Work": {...starter.common},
+// 	"Creativity": {...starter.common},
+// 	"Knowledge": {...starter.common},
+// 	"Technology": {...starter.common}
+// }
 
 
+// generateCache = async () => {
+// 	for (let i = 0; i < Object.keys(starterCache).length; i++) {
+// 		let theme = Object.keys(starterCache)[i];
+// 		for (let j = 0; j < starter[theme].length; j++) {
+// 			let url = starter[theme][j];
+// 			await addToCache(url, starterCache[theme]);
+// 		}
+// 	}
+// }
 
-function download(content, fileName, contentType) {
-	var a = document.createElement("a");
-	var file = new Blob([content], { type: contentType });
-	a.href = URL.createObjectURL(file);
-	a.download = fileName;
-	a.click();
-}
 
 
-async function hello() {
-	await generateCache();
-	download(JSON.stringify(starterCache), 'json.txt', 'text/plain');
-}
+// function download(content, fileName, contentType) {
+// 	var a = document.createElement("a");
+// 	var file = new Blob([content], { type: contentType });
+// 	a.href = URL.createObjectURL(file);
+// 	a.download = fileName;
+// 	a.click();
+// }
 
-hello();
+
+// async function hello() {
+// 	await generateCache();
+// 	download(JSON.stringify(starterCache), 'json.txt', 'text/plain');
+// }
+
+// hello();
