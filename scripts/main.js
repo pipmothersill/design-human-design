@@ -67,7 +67,7 @@ function randomizeAll(spreadsheetJsonURL) {
 		.then(data => {
 			if (!data.feed.hasOwnProperty('entry')) {
 				console.error('Spreadsheet is empty!');
-				return;
+				data.feed.entry = [];
 			}
 			console.log(data.feed.entry);
 			// spreadsheet data comes in as a big array, let's set a global array to that for easy access
