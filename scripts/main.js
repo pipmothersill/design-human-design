@@ -377,7 +377,7 @@ function getWebpageKeywords(url) {
 
 function getTextKeywords(text) {
 	return ajax(nltkServer + "/text", "POST", {
-			text: textInput
+			text: text
 		})
 		.then(response => response.json());
 }
