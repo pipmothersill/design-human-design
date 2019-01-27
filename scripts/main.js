@@ -121,8 +121,8 @@ function saveToCookie() {
 
 function saveToSheets(dataToSave) {
 
-	randomizeAll(datalist_general).then(response => {
-			const updates = {};
+	return randomizeAll(datalist_general).then(response => {
+		const updates = {};
 		for (let i = 0; i < categories.length; i++) {
 			const categoryName = categories[i];
 			updates[categoryName] = {
@@ -131,9 +131,11 @@ function saveToSheets(dataToSave) {
 			}
 		}
 
-		ajax(sheetsServer + '/update', "POST", {
+		return ajax(sheetsServer + '/update', "POST", {
 			id: spreadsheetKey,
 			updates: updates
+		}).then(response => {
+			randomizeAll(datalist_general);
 		});
 	});
 }
