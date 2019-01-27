@@ -235,8 +235,10 @@ $(document).ready(function () {
 	})
 
 	$("#print-button").click(function () {
+		$(".corner-button").hide();
 		html2canvas(document.body, {
 			onrendered: function (canvas) {
+				$(".corner-button").show();
 				var a = document.createElement('a');
 				// toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
 				a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
