@@ -2,6 +2,7 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>designhumandesign</title>
 
@@ -10,6 +11,7 @@
 		-->
 	<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Rubik Mono One" rel="stylesheet">
 
 	<!-- nice one moving your CSS to a file! -->
 	<link rel="stylesheet" type="text/css" href="dhd_stylesheet.css">
@@ -36,37 +38,42 @@
 
 	<div class="madlib-container">
 
+		<div id="hidden">
+			<a class="fadeText-animation" href="javascript:randomize('artifacts')"> </a>
+			<span class="artifacts"><input class="madlib-input growText-animation" type="text"></span>
+		</div>
+
 		<div class="madlib-category">
 			<!-- made it so you're only dealing with a single function that figures things out with a parameter - in general, look for ways to not repeat yourself in webcode :) -->
-			<a href="javascript:randomize('artifacts')">Design </a>
-			<span class="artifacts"><input class="madlib-input" type="text" id="artifacts_input" onClick="this.select();"></span>
+			<a class="fadeText-animation" href="javascript:randomize('artifacts')">IMAGINE </a>
+			<span class="artifacts"><input class="madlib-input growText-animation" type="text" id="artifacts_input" onClick="this.select();"></span>
 		</div>
 
 		<div class="madlib-category">
-			<a href="javascript:randomize('inspirations')">Inspired by </a>
-			<span class="inspirations"><input class="madlib-input" type="text" id="inspirations_input" onClick="this.select();"></span></span>
+			<a class="fadeText-animation" href="javascript:randomize('inspirations')">INSPIRED BY </a>
+			<span class="inspirations"><input class="madlib-input growText-animation" type="text" id="inspirations_input" onClick="this.select();"></span>
 		</div>
 
 		<div class="madlib-category">
-			<a href="javascript:randomize('experiences')">That is </a>
-			<span class="experiences"><input class="madlib-input" type="text" id="experiences_input" onClick="this.select();"></span>
+			<a class="fadeText-animation" href="javascript:randomize('experiences')">THAT FEELS </a>
+			<span class="experiences"><input class="madlib-input growText-animation" type="text" id="experiences_input" onClick="this.select();"></span>
 		</div>
 
-		<div class="madlib-category">
+<!-- 		<div class="madlib-category">
 			<a href="javascript:randomize('attributes')">Through </a>
 			<span class="attributes"><input class="madlib-input" type="text" id="attributes_input" onClick="this.select();"></span>
-		</div>
+		</div> -->
 
 		<div class="madlib-category">
-			<a href="javascript:randomize('medium')">Using </a>
-			<span class="medium"><input class="madlib-input" type="text" id="medium_input" onClick="this.select();"></span>
+			<a class="fadeText-animation" href="javascript:randomize('medium')">MADE WITH </a>
+			<span class="medium"><input class="madlib-input growText-animation" type="text" id="medium_input" onClick="this.select();"></span>
 		</div>
 
-		<a class="corner-button" id="print-button"><img border="0" alt="Save" src="save_icon.png" width="65" height="65"></a>
+		<a id="print-button"><img border="0" alt="Save" src="save_icon.png" width="65" height="65"></a>
 
-		<a class="corner-button" id="upload-button"><img border="0" alt="Upload" src="upload_logo.png" width="60" height="60"></a>
+		<a id="upload-button"><img border="0" alt="Upload" src="upload_logo.png" width="60" height="60"></a>
 
-		<a class="corner-button fade" id="auto-button"><img border="0" alt="Auto refresh" src="auto_icon.png" width="60" height="60"></a>
+		<a id="auto-button"><img border="0" alt="Auto refresh" src="auto_icon.png" width="60" height="60"></a>
 
 	</div>
 
@@ -132,7 +139,6 @@
 				<span id="status-message-webpage"></span>
 				<span id="webpage-result"></span>
 			</section>
-			<button class="theme-page-button">I need some inspiration help!</butto>
 		</div>
 
 		<div class="step step4">

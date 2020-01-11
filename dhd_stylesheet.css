@@ -151,22 +151,24 @@ p.linkFont {
 }
 
 span.linkFont {
-	font-family: 'Lora';
-	font-style: italic;
+	font-family: 'Rubik Mono One', sans-serif;
+	font-weight: 400;
+	display: inline-block;
 }
 
 .madlib-container {
-	font-family: 'Lora', Georgia, serif;
+	font-family: 'Rubik Mono One', sans-serif;
+	font-weight: 400;
 	font-size: 48px;
 	color: #FFF;
 	text-align: left;
 	line-height: 60px;
-
-	left: 30%;
+	left: 2%;
 	top: 30%;
 	position: absolute;
 	bottom: 0;
 	right: 0;
+	border:none;
 
 	/* some fanciness - made it opacity:0 so it'd be transparent til the JSON loads
 	in the JS, when the JSON loads, it adds the 'fadeIn' class, which makes the opacity:1;
@@ -175,44 +177,16 @@ span.linkFont {
 	transition: opacity 0.3s;
 }
 
-@media (max-width: 1100px) {
-	.madlib-input {
-		width: 420px;
-		font-size: 48px;
-	}
-}
-
-@media (max-width: 768px) {
-	.madlib-container {
-		left: 10%;
-		top: 10%;
-		font-size: 36px;
-		/* you don't need to put these in here again - they'll already be applied from being part of the default above
-		stuff included in media query CSS rules overrides other rules */
-		/*position:absolute;
-		height:350px;
-		text-align:left;
-		right: 0;
-		*/
-	}
-
-	.madlib-input {
-		width: 300px;
-		font-size: 36px;
-	}
-}
-
 .madlib-container .madlib-input {
 	/* moved all the common attributes of all the spans in here */
-	border-style: solid;
-	border-color: #1A1A1A;
+	border-style: none;
 	outline: 0;
-	/* using the google font Lora, similar to Sentinel */
-	/* in general for font families - it's good to include 1-2 fall-through backups. */
-	font-family: 'Lora', Georgia, serif;
+	line-height: 1.5;
+	font-family: 'Rubik Mono One', sans-serif;
+	font-weight: 400;
 	font-size: 48px;
 	background-color: transparent;
-
+	text-transform: uppercase;
 }
 
 .artifacts .madlib-input {
@@ -233,6 +207,37 @@ span.linkFont {
 
 .medium .madlib-input {
 	color: #FF0;
+}
+
+.growText-animation {
+	-webkit-animation: growText 60s ease;
+  	/*animation-duration: 10s;*/
+	-webkit-animation-delay:2s;
+}
+
+@-webkit-keyframes growText { 
+
+  0%   { opacity: 1;}
+  100% { -webkit-transform-origin: left; -webkit-transform: scale(3.5) translate(20px); opacity: 0.5;}
+}
+
+.fadeText-animation {
+	-webkit-animation: fadeText 60s ease;
+  	/*animation-duration: 10s;*/
+	-webkit-animation-delay:2s;
+}
+
+@-webkit-keyframes fadeText { 
+
+  0%   { opacity: 1;}
+  5% { opacity: 0.2;}
+  100% { opacity: 0.2;}
+}
+
+#hidden {
+	visibility: hidden;
+	width: 0px;
+	height: 0px;
 }
 
 
@@ -288,10 +293,6 @@ a:active {
 	right: 85;
 }
 
-#auto-button.fade {
-	opacity: .3;
-}
-
 #print-button {
 	right: 150;
 }
@@ -327,12 +328,14 @@ p.logo {
 .about_text {
 	position: absolute;
 	top: 75px;
-	right: 250px;
-	left: 250px;
+	right: 25%;
+	left: 25%;
 	font-family: 'Inconsolata';
+	font-style: light;
 	font-size: 16px;
 	margin: 10px;
 	color: white;
+	line-height: 1.2;
 }
 
 .columns {
@@ -356,7 +359,9 @@ p.logo {
 
 .upload-modal {
 	line-height: 1.3;
-	font-family: 'Lora', Georgia, serif;
+	/*font-family: 'Montserrat', Georgia, serif;*/
+	font-family: 'Lora', Georgia, sans-serif;
+	font-weight: 400;
 	padding: 20px;
 	position: relative;
 	width: 50vw;
@@ -473,4 +478,33 @@ i {
 h3,
 section {
 	margin-bottom: 10px;
+}
+
+/*@media (max-width: 1100px) {
+	.madlib-input {
+		width: 420px;
+		font-size: 48px;
+	}
+}*/
+
+@media (max-width: 768px) {
+	.madlib-container {
+		left: 10%;
+		top: 15%;
+		font-size: 24px;
+		line-height: 0.5;
+	}
+
+/*	.madlib-input {
+		width: 300px;
+		font-size: 12px;
+	}*/
+}
+
+@media (max-width: 768px) {
+
+	.madlib-input {
+		/*width: 300px;*/
+		font-size: 24px  !important;
+	}
 }
