@@ -9,15 +9,14 @@ const categories = [
 	'attributes',
 	'medium',
 ];
-
-var sheetsServer, nltkServer;
-
-if (window.location.hostname === 'localhost') {
-	sheetsServer = 'http://localhost:3000';
-	nltkServer = 'http://localhost:5000';
-} else {
-	sheetsServer = 'http://designhumandesign.media.mit.edu:3000';
-	nltkServer = 'http://designhumandesign.media.mit.edu:8080';
+const nltkServer = {
+	text: 'https://us-east4-looking-sideways.cloudfunctions.net/keyword-extractor',
+	webpage: 'https://us-east4-looking-sideways.cloudfunctions.net/keyword-extractor-webpage',
+	pdf: 'https://us-east4-looking-sideways.cloudfunctions.net/keyword-extractor-pdf',
+}
+const sheetsServer = {
+	append: 'https://us-east4-looking-sideways.cloudfunctions.net/update-spreadsheet',
+	update: 'https://us-east4-looking-sideways.cloudfunctions.net/update-spreadsheet-update',
 }
 
 const masterSheetKey = '1r1HWyQ7goAWwoHd7O1x-ph1i7DuJAGwoqsnnj2c_lvE';
@@ -133,7 +132,7 @@ function saveToSheets(dataToSave) {
 			}
 		}
 
-		return ajax(sheetsServer + '/update', "POST", {
+		return ajax(sheetsServer.update, "POST", {
 			id: spreadsheetKey,
 			updates: updates
 		}).then(response => {
@@ -160,7 +159,7 @@ function setLinks() {
 
 function saveToMasterSpreadsheet(projectKey) {
 	projectName = document.getElementById('project-name').value;
-	ajax(sheetsServer + '/append', "POST", {
+	ajax(sheetsServer.append, "POST", {
 		masterKey: masterSheetKey,
 		projectKey: projectKey,
 		projectName: projectName
@@ -377,19 +376,19 @@ function uploadKeyHandler(event) {
 }
 
 function getWebpageKeywords(url) {
-	return ajax(nltkServer + "/webpage?url=" + encodeURIComponent(url), "GET")
+	return ajax(nltkServer.webpage + "?url=" + encodeURIComponent(url), "GET")
 		.then(response => response.json());
 }
 
 function getTextKeywords(text) {
-	return ajax(nltkServer + "/text", "POST", {
+	return ajax(nltkServer.text, "POST", {
 			text: text
 		})
 		.then(response => response.json());
 }
 
 function getPDFKeywords(data) {
-	return ajax(nltkServer + '/upload', "POST", data, false)
+	return ajax(nltkServer.pdf, "POST", data, false)
 		.then(response => response.json());
 }
 
