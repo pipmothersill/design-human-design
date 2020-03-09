@@ -41,6 +41,8 @@ var cachedValues = {
 
 
 function randomize(category) {
+	$(".growText-animation").toggle().toggle();
+	$(".fadeText-animation").toggle().toggle();
 	// TODO: make sure no redundant words
 	const len = cachedValues[category].length;
 	let newValue;
