@@ -10,13 +10,13 @@ const categories = [
 	'medium',
 ];
 const nltkServer = {
-	text: 'https://us-east4-looking-sideways.cloudfunctions.net/keyword-extractor',
-	webpage: 'https://us-east4-looking-sideways.cloudfunctions.net/keyword-extractor-webpage',
-	pdf: 'https://us-east4-looking-sideways.cloudfunctions.net/keyword-extractor-pdf',
+	text: 'https://us-east4-looking-sideways.cloudfunctions.net/extract-keywords?type=text',
+	webpage: 'https://us-east4-looking-sideways.cloudfunctions.net/extract-keywords?type=webpage',
+	pdf: 'https://us-east4-looking-sideways.cloudfunctions.net/extract-keywords?type=pdf',
 }
 const sheetsServer = {
-	append: 'https://us-east4-looking-sideways.cloudfunctions.net/update-spreadsheet',
-	update: 'https://us-east4-looking-sideways.cloudfunctions.net/update-spreadsheet-update',
+	append: 'https://us-east4-looking-sideways.cloudfunctions.net/update-spreadsheet?method=append',
+	update: 'https://us-east4-looking-sideways.cloudfunctions.net/update-spreadsheet?method=update',
 }
 
 const masterSheetKey = '1r1HWyQ7goAWwoHd7O1x-ph1i7DuJAGwoqsnnj2c_lvE';
@@ -121,7 +121,6 @@ function saveToCookie() {
 }
 
 function saveToSheets(dataToSave) {
-
 	return randomizeAll(datalist_general).then(response => {
 		const updates = {};
 		for (let i = 0; i < categories.length; i++) {
@@ -376,7 +375,7 @@ function uploadKeyHandler(event) {
 }
 
 function getWebpageKeywords(url) {
-	return ajax(nltkServer.webpage + "?url=" + encodeURIComponent(url), "GET")
+	return ajax(nltkServer.webpage + "&url=" + encodeURIComponent(url), "GET")
 		.then(response => response.json());
 }
 
