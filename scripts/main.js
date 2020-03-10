@@ -380,9 +380,7 @@ function getWebpageKeywords(url) {
 }
 
 function getTextKeywords(text) {
-	return ajax(nltkServer.text, "POST", {
-			text: text
-		})
+	return ajax(nltkServer.text + "&text=" + text, "GET")
 		.then(response => response.json());
 }
 
