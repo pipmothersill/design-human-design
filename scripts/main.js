@@ -351,14 +351,15 @@ $(document).ready(function () {
 function uploadKeyHandler(event) {
 	document.querySelector('#status-message-key').innerText = 'Loading...';
 	event.preventDefault();
-	let inputedKey = $("#spreadsheet-key").val();
-	inputedKey = inputedKey.split('/').filter(URLPart => URLPart.length === 44)[0];
+	let inputtedKey = $("#spreadsheet-key").val();
+	const match = /([a-zA-Z0-9-_]{44})/.exec(inputtedKey);
+	inputtedKey = match[1];
 	let oldKey = spreadsheetKey;
-	if (inputedKey.length !== 44) {
+	if (!inputtedKey || inputtedKey.length !== 44) {
 		document.querySelector('#status-message-key').innerText = 'Error : Invalid key';
 		return;
 	} else {
-		spreadsheetKey = inputedKey;
+		spreadsheetKey = inputtedKey;
 		convertURL();
 		randomizeAll(datalist_general).then(response => {
 			document.querySelector('#status-message-key').innerText = 'Success: spreadsheet loaded';
